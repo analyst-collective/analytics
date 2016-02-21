@@ -1,8 +1,4 @@
-drop schema if exists pardot cascade;
-create schema pardot;
-
-
-create or replace view pardot.visitor_activity_base as (
+create or replace view pardot.visitor_activity_transformed as (
 
 	select
 		campaign_id									as campaign_id,
@@ -22,7 +18,7 @@ create or replace view pardot.visitor_activity_base as (
 );
 
 
-create or replace view pardot.prospect_base as (
+create or replace view pardot.prospect_transformed as (
 
 	select
 		id 											as id,
@@ -75,7 +71,7 @@ create or replace view pardot.prospect_base as (
 );
 
 
-create or replace view pardot.campaign_base as (
+create or replace view pardot.campaign_transformed as (
 
 	select
 		id													as id,
@@ -87,7 +83,7 @@ create or replace view pardot.campaign_base as (
 );
 
 
-create or replace view pardot.opportunity_base as (
+create or replace view pardot.opportunity_transformed as (
 
 	select
 		probability									as probability,
@@ -107,7 +103,7 @@ create or replace view pardot.opportunity_base as (
 );
 
 
-create or replace view pardot.visit_base as (
+create or replace view pardot.visit_transformed as (
 
 	select
 		duration_in_seconds					as duration_in_seconds,
@@ -130,18 +126,18 @@ create or replace view pardot.visit_base as (
 );
 
 
-create or replace view pardot.visitor_base as (
+create or replace view pardot.visitor_transformed as (
 
 	select
 		id													as id,
 		prospect_id									as prospect_id
 	from
-		olga_pardot.visitor
+		olga_pardot.visitor_filtered
 
 );
 
 
-create or replace view pardot.visitor_pageview_base as (
+create or replace view pardot.visitor_pageview_transformed as (
 
 	select
 		url													as url,
@@ -151,12 +147,12 @@ create or replace view pardot.visitor_pageview_base as (
 		created_at									as created_at,
 		visitor_id									as visitor_id
 	from
-		olga_pardot.visitorpageview
+		pardot.visitor_pageview_filtered
 
 );
 
 
-create or replace view pardot.visitor_referrer_base as (
+create or replace view pardot.visitor_referrer_transformed as (
 
 	select
 		vendor											as vendor,
@@ -167,6 +163,6 @@ create or replace view pardot.visitor_referrer_base as (
 		query												as query,
 		prospect_id									as prospect_id
 	from
-		olga_pardot.visitorreferrer
+		pardot.visitor_referrer_filtered
 
 );
