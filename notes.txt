@@ -15,3 +15,4 @@ questions/notes
 - what's the best way to execute a bunch of sql statements in a row even with the sql source being in independent files?
 - how do these get documented in an SEO-friendly way? coming across one of these in github will scare off most medium-technical biz users...
 - we should consider making a cleanup script that drops all of the views created. it's annoying to clean up after them.
+- is there a way we can provide a deduplication layer? this is a big problem that yevgeniy runs into; we should think about it.
