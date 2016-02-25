@@ -2,8 +2,8 @@ create or replace view trello.cards as (
 
 	select
 		c.id,
-		c.data__board__id as idboard,
-		c.data__list__id as idlist,
+		c.idboard,
+		c.idlist,
 		c.idshort,
 		c.name,
 		c.datelastactivity::timestamp as datelastactivity,
@@ -15,8 +15,8 @@ create or replace view trello.cards as (
   join
 		trello.actions_base created_action
 		on
-			created_action.cardid = c.id
-			and created_action.cardid is not null
+			created_action.data__card__id = c.id
+			and created_action.data__card__id is not null
 			and created_action.type = 'createCard'
 
 );
