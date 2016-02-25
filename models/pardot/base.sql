@@ -1,7 +1,3 @@
-drop schema if exists pardot_analysis cascade;
-create schema pardot_analysis;
-
-
 create or replace view pardot_analysis.visitoractivity_base as (
 
 	select
