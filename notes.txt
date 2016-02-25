@@ -6,7 +6,7 @@ sql construction conventions
 - all files should contain a single ddl operation
 
 
-questions
+questions/notes
 - need to create a destination schema for views created.
   - should be separate schema for each source system or all together in a single schema?
   - should scripts automatically drop / recreate schemas? much cleaner but high potential for fuckup by users not paying attention.
@@ -14,3 +14,5 @@ questions
 - how should unit / integration / regression testing work? the last two, especially, are a huge deal.
 - what's the best way to execute a bunch of sql statements in a row even with the sql source being in independent files?
 - how do these get documented in an SEO-friendly way? coming across one of these in github will scare off most medium-technical biz users...
+- we should consider making a cleanup script that drops all of the views created. it's annoying to clean up after them.
+- is there a way we can provide a deduplication layer? this is a big problem that yevgeniy runs into; we should think about it.
