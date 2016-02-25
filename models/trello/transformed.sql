@@ -2,14 +2,14 @@ create or replace view trello.cards as (
 
 	select
 		c.id,
-		c.idlist,
-		c.idboard,
+		c.data__board__id as idboard,
+		c.data__list__id as idlist,
 		c.idshort,
 		c.name,
-		c.datelastactivity,
-		c.due,
+		c.datelastactivity::timestamp as datelastactivity,
+		c.due::timestamp as due,
 		c.closed,
-		created_action.date as created_at
+		created_action.date::timestamp as created_at
 	from
 		trello.cards_base c
   join

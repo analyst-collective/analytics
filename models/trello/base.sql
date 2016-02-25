@@ -9,8 +9,8 @@ create or replace view trello.cards_base as (
 		idboard,
 		idshort,
 		name,
-		datelastactivity::timestamp as datelastactivity,
-		due::timestamp as due,
+		datelastactivity,
+		due,
 		closed
 	from
 		trello_growth.trello_cards
@@ -34,10 +34,10 @@ create or replace view trello.actions_base as (
 	select
 		id,
 		idmembercreator,
-		data__board__id as idboard,
-		data__list__id as idlist,
-		data__card__id as idcard,
-		date::timestamp as date,
+		data__board__id,
+		data__list__id,
+		data__card__id,
+		date,
 		"type"
 	from trello_growth.trello_actions
 
