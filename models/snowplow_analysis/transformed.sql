@@ -220,7 +220,10 @@ CREATE OR REPLACE VIEW snowplow_analysis.events_transformed as (
     "ti_price"                  as "ti_price",
     "tr_shipping"               as "tr_shipping",
     "tr_tax"                    as "tr_tax",
-    "tr_total"                  as "tr_total"
+    "tr_total"                  as "tr_total",
+
+    "collector_tstamp"          as "timestamp",
+    "user_id"                   as "userid"
   FROM
     snowplow_analysis.events_filtered
 );
