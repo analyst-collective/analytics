@@ -1,6 +1,4 @@
-
-
-CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_link_click_1_base as (
+CREATE OR REPLACE VIEW snowplow_analysis.com_snowplowanalytics_snowplow_link_click_1_transformed as (
   SELECT
     "root_id"          as "root_id",
     "target_url"       as "target_url",
@@ -16,12 +14,12 @@ CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_link_click_1_base
     "schema_vendor"    as "schema_vendor",
     "root_tstamp"      as "root_tstamp"
   FROM
-    atomic.com_snowplowanalytics_snowplow_link_click_1
+    snowplow_analysis.com_snowplowanalytics_snowplow_link_click_1_filtered
 );
 
 
 
-CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_change_form_1_base as (
+CREATE OR REPLACE VIEW snowplow_analysis.com_snowplowanalytics_snowplow_change_form_1_transformed as (
   SELECT
     "root_id"          as "root_id",
     "value"            as "value",
@@ -39,11 +37,12 @@ CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_change_form_1_bas
     "schema_vendor"    as "schema_vendor",
     "root_tstamp"      as "root_tstamp"
   FROM
-    atomic.com_snowplowanalytics_snowplow_change_form_1
+    snowplow_analysis.com_snowplowanalytics_snowplow_change_form_1_filtered
 );
 
 
-CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_submit_form_1_base as (
+
+CREATE OR REPLACE VIEW snowplow_analysis.com_snowplowanalytics_snowplow_submit_form_1_transformed as (
   SELECT
     "root_id"         as "root_id",
     "elements"        as "elements",
@@ -58,11 +57,12 @@ CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_submit_form_1_bas
     "schema_vendor"   as "schema_vendor",
     "root_tstamp"     as "root_tstamp"
   FROM
-    atomic.com_snowplowanalytics_snowplow_submit_form_1
+    snowplow_analysis.com_snowplowanalytics_snowplow_submit_form_1_filtered
 );
 
 
-CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_ua_parser_context_1_base as (
+
+CREATE OR REPLACE VIEW snowplow_analysis.com_snowplowanalytics_snowplow_ua_parser_context_1_transformed as (
   SELECT
     "root_id"            as "root_id",
     "device_family"      as "device_family",
@@ -86,12 +86,12 @@ CREATE OR REPLACE VIEW snowplow.com_snowplowanalytics_snowplow_ua_parser_context
     "schema_vendor"      as "schema_vendor",
     "root_tstamp"        as "root_tstamp"
   FROM
-    atomic.com_snowplowanalytics_snowplow_ua_parser_context_1
+    snowplow_analysis.com_snowplowanalytics_snowplow_ua_parser_context_1_filtered
 );
 
 
 
-CREATE OR REPLACE VIEW snowplow.events_base as (
+CREATE OR REPLACE VIEW snowplow_analysis.events_transformed as (
   SELECT
     "dvce_ismobile"             as "dvce_ismobile",
     "br_cookies"                as "br_cookies",
@@ -222,5 +222,5 @@ CREATE OR REPLACE VIEW snowplow.events_base as (
     "tr_tax"                    as "tr_tax",
     "tr_total"                  as "tr_total"
   FROM
-    atomic.events
+    snowplow_analysis.events_filtered
 );
