@@ -2,9 +2,8 @@ sql construction conventions
 - first layer should simply set fields and table / schema
 - second layer should be filter. if no records to be filtered out, simply implement as select *.
 - third layer should be transformations. this could include datatype conversions, mapping, and other simple transformations to make the data more standardized and consumable. *all transformations must meet the strict definition of universal applicability.*
+- see logical-model-flow.pdf for a visual representation of the structure.
 - all files should be DDL (should create permanent database objects, not just execute queries)
-- all files should contain a single ddl operation
-
 
 questions/notes
 - need to create a destination schema for views created.
