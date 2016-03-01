@@ -1,0 +1,9 @@
+
+########################################
+#       Event Stream Interface         #
+########################################
+
+timestamp     timestamp
+event_type    varchar
+event_action  varchar
+
