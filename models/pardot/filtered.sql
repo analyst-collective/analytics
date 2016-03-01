@@ -1,21 +1,21 @@
-create or replace view pardot.visitor_activity_filtered as (
+create or replace view pardot_analysis.visitor_activity_filtered as (
 
-	select
-		*
-	from
-		pardot.visitor_activity_base
+  select
+    *
+  from
+    pardot_analysis.visitor_activity_base
   --where
 
 );
 
 
 
-create or replace view pardot.prospect_filtered as (
+create or replace view pardot_analysis.prospect_filtered as (
 
-	select
-		*
-	from
-		pardot.prospect_base
+  select
+    *
+  from
+    pardot_analysis.prospect_base
   --where
 
 );
@@ -23,72 +23,72 @@ create or replace view pardot.prospect_filtered as (
 
 
 
-create or replace view pardot.campaign_filtered as (
+create or replace view pardot_analysis.campaign_filtered as (
 
-	select
-		*
-	from
-		pardot.campaign_base
+  select
+    *
+  from
+    pardot_analysis.campaign_base
   --where
 
 );
 
 
 
-create or replace view pardot.campaign_filtered as (
+create or replace view pardot_analysis.campaign_filtered as (
 
-	select
-		*
-	from
-		pardot.campaign_base
+  select
+    *
+  from
+    pardot_analysis.campaign_base
   --where
 
 );
 
 
 
-create or replace view pardot.visit_filtered as (
+create or replace view pardot_analysis.visit_filtered as (
 
-	select
-		*
-	from
-		pardot.visit_base
+  select
+    *
+  from
+    pardot_analysis.visit_base
   --where
 
 );
 
 
 
-create or replace view pardot.visitor_filtered as (
+create or replace view pardot_analysis.visitor_filtered as (
 
-	select
-		*
-	from
-		pardot.visitor_base
+  select
+    *
+  from
+    pardot_analysis.visitor_base
   --where
 
 );
 
 
 
-create or replace view pardot.visitor_pageview_filtered as (
+create or replace view pardot_analysis.visitor_pageview_filtered as (
 
-	select
-		*
-	from
-		pardot.visitor_pageview_base
+  select
+    *
+  from
+    pardot_analysis.visitor_pageview_base
   --where
 
 );
 
 
 
-create or replace view pardot.visitor_referrer_filtered as (
+create or replace view pardot_analysis.visitor_referrer_filtered as (
 
-	select
-		*
-	from
-		pardot.visitor_referrer_base
+  select
+    *
+  from
+    pardot_analysis.visitor_referrer_base
   --where
 
 );
