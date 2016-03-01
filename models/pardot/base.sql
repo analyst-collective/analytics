@@ -1,8 +1,4 @@
-drop schema if exists pardot cascade;
-create schema pardot;
-
-
-create or replace view pardot.visitor_activity_base as (
+create or replace view pardot_analysis.visitoractivity_base as (
 
 	select
 		campaign_id									as campaign_id,
@@ -22,7 +18,7 @@ create or replace view pardot.visitor_activity_base as (
 );
 
 
-create or replace view pardot.prospect_base as (
+create or replace view pardot_analysis.prospect_base as (
 
 	select
 		id 											as id,
@@ -32,13 +28,11 @@ create or replace view pardot.prospect_base as (
 		last_name 							as last_name,
 		email 									as email,
 		company 								as company,
-		prospect_account_id 		as prospect_account_id,
 		website 								as website,
 		job_title 							as job_title,
 		department 							as department,
 		country 								as country,
 		address_one 						as address_one,
-		address_two 						as address_two,
 		city 										as city,
 		state 									as state,
 		territory 							as territory,
@@ -47,9 +41,7 @@ create or replace view pardot.prospect_base as (
 		fax 										as fax,
 		source 									as source,
 		annual_revenue 					as annual_revenue,
-		employees 							as employees,
 		industry 								as industry,
-		years_in_business 			as years_in_business,
 		comments 								as comments,
 		notes 									as notes,
 		score 									as score,
@@ -59,7 +51,6 @@ create or replace view pardot.prospect_base as (
 		crm_lead_fid 						as crm_lead_fid,
 		crm_contact_fid 				as crm_contact_fid,
 		crm_owner_fid 					as crm_owner_fid,
-		crm_account_fid 				as crm_account_fid,
 		crm_last_sync 					as crm_last_sync,
 		crm_url 								as crm_url,
 		is_do_not_email 				as is_do_not_email,
@@ -75,19 +66,7 @@ create or replace view pardot.prospect_base as (
 );
 
 
-create or replace view pardot.campaign_base as (
-
-	select
-		id													as id,
-		cost												as cost,
-		name												as name
-	from
-		olga_pardot.campaign
-
-);
-
-
-create or replace view pardot.opportunity_base as (
+create or replace view pardot_analysis.opportunity_base as (
 
 	select
 		probability									as probability,
@@ -103,70 +82,5 @@ create or replace view pardot.opportunity_base as (
 		"type"											as "type"
 	from
 		olga_pardot.opportunity
-
-);
-
-
-create or replace view pardot.visit_base as (
-
-	select
-		duration_in_seconds					as duration_in_seconds,
-		id													as id,
-		last_visitor_page_view_at		as last_visitor_page_view_at,
-		updated_at									as updated_at,
-		first_visitor_page_view_at	as first_visitor_page_view_at,
-		visitor_page_view_count			as visitor_page_view_count,
-		created_at									as created_at,
-		visitor_id									as visitor_id,
-		content_parameter						as content_parameter,
-		term_parameter							as term_parameter,
-		medium_parameter						as medium_parameter,
-		source_parameter						as source_parameter,
-		prospect_id									as prospect_id,
-		campaign_parameter					as campaign_parameter
-	from
-		olga_pardot.visit
-
-);
-
-
-create or replace view pardot.visitor_base as (
-
-	select
-		id													as id,
-		prospect_id									as prospect_id
-	from
-		olga_pardot.visitor
-
-);
-
-
-create or replace view pardot.visitor_pageview_base as (
-
-	select
-		url													as url,
-		id													as id,
-		visit_id										as visit_id,
-		title												as title,
-		created_at									as created_at,
-		visitor_id									as visitor_id
-	from
-		olga_pardot.visitorpageview
-
-);
-
-
-create or replace view pardot.visitor_referrer_base as (
-
-	select
-		vendor											as vendor,
-		referrer										as referrer,
-		id													as id,
-		"type"											as "type",
-		visitor_id									as visitor_id,
-		query												as query,
-		prospect_id									as prospect_id
-	from
-		olga_pardot.visitorreferrer
 
 );
