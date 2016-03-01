@@ -36,7 +36,7 @@ create or replace view pardot_analysis.visitoractivity_types_meta as (
   select 31, 'UserVoice Suggestion' union all
   select 32, 'UserVoice Comment' union all
   select 33, 'UserVoice Ticket' union all
-  select 34, 'Video Watched (≥ 75% watched)'
+  select 34, 'Video Watched (>= 75% watched)'
 
 );
 

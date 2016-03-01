@@ -2,7 +2,6 @@ drop schema if exists snowplow_analysis cascade;
 create schema snowplow_analysis;
 
 
-/*
 CREATE OR REPLACE VIEW snowplow_analysis.link_click as (
   SELECT
     "root_id"          as "root_id",
@@ -68,7 +67,6 @@ CREATE OR REPLACE VIEW snowplow_analysis.submit_form as (
 );
 
 COMMENT ON TABLE snowplow_analysis.submit_form IS 'timeseries,funnel,cohort';
-*/
 
 
 CREATE OR REPLACE VIEW snowplow_analysis.events as (
