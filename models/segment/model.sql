@@ -27,7 +27,7 @@ CREATE OR REPLACE VIEW segment_analysis.track as (
     segment.track
 );
 
-COMMENT ON TABLE segment_analysis."track" IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW segment_analysis."track" IS 'timeseries,funnel,cohort';
 
 
 CREATE OR REPLACE VIEW segment_analysis."group" as (
@@ -106,4 +106,4 @@ CREATE OR REPLACE VIEW segment_analysis.page as (
     segment.page
 );
 
-COMMENT ON TABLE segment_analysis."page" IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW segment_analysis."page" IS 'timeseries,funnel,cohort';

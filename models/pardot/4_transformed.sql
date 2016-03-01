@@ -27,7 +27,7 @@ create or replace view pardot_analysis.visitoractivity_transformed as (
       on va."type" = t."type"
 );
 
-COMMENT ON TABLE pardot_analysis.visitoractivity_transformed IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW pardot_analysis.visitoractivity_transformed IS 'timeseries,funnel,cohort';
 
 
 create or replace view pardot_analysis.prospect_transformed as (

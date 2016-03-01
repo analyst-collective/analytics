@@ -21,7 +21,7 @@ CREATE OR REPLACE VIEW snowplow_analysis.link_click as (
     atomic.com_snowplowanalytics_snowplow_link_click_1
 );
 
-COMMENT ON TABLE snowplow_analysis.link_click IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW snowplow_analysis.link_click IS 'timeseries,funnel,cohort';
 
 
 CREATE OR REPLACE VIEW snowplow_analysis.change_form as (
@@ -45,7 +45,7 @@ CREATE OR REPLACE VIEW snowplow_analysis.change_form as (
     atomic.com_snowplowanalytics_snowplow_change_form_1
 );
 
-COMMENT ON TABLE snowplow_analysis.change_form IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW snowplow_analysis.change_form IS 'timeseries,funnel,cohort';
 
 
 CREATE OR REPLACE VIEW snowplow_analysis.submit_form as (
@@ -66,7 +66,7 @@ CREATE OR REPLACE VIEW snowplow_analysis.submit_form as (
     atomic.com_snowplowanalytics_snowplow_submit_form_1
 );
 
-COMMENT ON TABLE snowplow_analysis.submit_form IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW snowplow_analysis.submit_form IS 'timeseries,funnel,cohort';
 
 
 CREATE OR REPLACE VIEW snowplow_analysis.events as (
@@ -207,4 +207,4 @@ CREATE OR REPLACE VIEW snowplow_analysis.events as (
     atomic.events
 );
 
-COMMENT ON TABLE snowplow_analysis.event IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW snowplow_analysis.event IS 'timeseries,funnel,cohort';
