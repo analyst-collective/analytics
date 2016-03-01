@@ -3,7 +3,7 @@ create or replace view pardot_analysis.visitoractivity_types_meta as (
   --these literal values are pulled from pardot's api docs here:
   --http://developer.pardot.com/kb/object-field-references/#visitor-activity
   --they change periodically over time and this query will need to be correspondingly modified.
-  select 1 as type, 'Click' as type_decoded union all
+  select 1 as "type", 'Click' as type_decoded union all
   select 2, 'View' union all
   select 3, 'Error' union all
   select 4, 'Success' union all

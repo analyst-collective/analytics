@@ -3,6 +3,11 @@ create or replace view pardot_analysis.visitoractivity_transformed as (
   --the custom logic in this view is an attempt to fix that.
   --not all of the various type / type_name combinations have been accounted for yet; I still need to determine exactly what some of them mean.
   select
+    -- event_stream interface
+    va.created_at       as timestamp,
+    t.type_decoded      as event_type,
+    e.event_name        as event_name
+
     va.campaign_id      as campaign_id,
     va.form_handler_id  as form_handler_id,
     va.id               as id,
@@ -14,14 +19,12 @@ create or replace view pardot_analysis.visitoractivity_transformed as (
     va.prospect_id      as prospect_id,
     va.visitor_id       as visitor_id,
     va.opportunity_id   as opportunity_id,
-    t.type_decoded      as type_decoded,
-    e.event_name        as event_name
   from
     pardot_analysis.visitoractivity_filtered va
     inner join pardot_analysis.visitoractivity_events_meta e
-      on va.type = e.type and va.type_name = e.type_name
+      on va."type" = e."type" and va.type_name = e.type_name
     inner join pardot_analysis.visitoractivity_types_meta t
-      on va.type = t.type
+      on va."type" = t."type"
 );
 
 COMMENT ON TABLE pardot_analysis.visitoractivity_transformed IS 'timeseries,funnel,cohort';
