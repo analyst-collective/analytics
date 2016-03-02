@@ -7,8 +7,7 @@ class Runner(object):
         self.creds = creds
         self.models_dir = models_dir
 
-        conn = psycopg2.connect(creds.conn_string)
-        self.cursor = conn.cursor()
+        self.connection = psycopg2.connect(creds.conn_string)
 
     def models(self):
         return self.config['models']
@@ -28,7 +27,10 @@ class Runner(object):
     def execute(self, sql):
         debug = sql.replace("\n", " ").strip()[0:200]
         print "Running: {}".format(debug)
-        self.cursor.execute(sql)
+        with self.connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql)
+                print "  {}".format(cursor.statusmessage)
 
     def interpolate(self, sql, model_name=""):
         try:
