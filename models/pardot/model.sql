@@ -89,9 +89,9 @@ create or replace view {schema}.visitoractivity as (
   --not all of the various type / type_name combinations have been accounted for yet; I still need to determine exactly what some of them mean.
   select
     -- event_stream interface
-    va.created_at       as timestamp,
-    t.type_decoded      as event,
-    va.prospect_id      as user_id,
+    va.created_at       as "@timestamp",
+    t.type_decoded      as "@event",
+    va.prospect_id      as "@user_id",
     va.*
   from
     olga_pardot.visitoractivity va

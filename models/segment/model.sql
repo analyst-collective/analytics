@@ -1,8 +1,8 @@
 CREATE OR REPLACE VIEW {schema}.track as (
   SELECT
-    "timestamp"  as "timestamp",
-    "event"      as "event",
-    "userid"     as "user_id",
+    "timestamp"  as "@timestamp",
+    "event"      as "@event",
+    "userid"     as "@user_id",
     *
 
   FROM
