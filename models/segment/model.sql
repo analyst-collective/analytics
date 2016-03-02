@@ -9,4 +9,4 @@ CREATE OR REPLACE VIEW {schema}.track as (
     segment.track
 );
 
-COMMENT ON VIEW {schema}."track" IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {schema}.track IS 'timeseries,funnel,cohort';
