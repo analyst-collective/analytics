@@ -4,6 +4,6 @@
 ########################################
 
 timestamp     timestamp
-event_type    varchar
-event_action  varchar
+event         varchar
+user_id       varchar
 
