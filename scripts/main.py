@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from analyst_collective import Credentials#, Runner
-import argparse, json, sys
+from analyst_collective import Credentials, Runner
+import argparse, json, sys, os
 
 parser = argparse.ArgumentParser(description='Analyst Collective Runner')
 parser.add_argument('--credentials', default="dbcredentials.txt", type=str, help='Path to database credentials file')
@@ -20,5 +20,8 @@ with open(args.config) as config_fh:
         print "Could not parse config file {}".format(args.config), e
         sys.exit(1)
 
+models_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models')
 
-print config
+runner = Runner(config, creds, models_dir)
+runner.clean_schema()
+runner.create_models()

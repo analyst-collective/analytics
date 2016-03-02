@@ -1,4 +1,4 @@
 {
 	"models" : ["pardot", "segment", "snowplow"],
-	"prefix" : "@ac_"
+	"schema" : "analyst_collective"
 }

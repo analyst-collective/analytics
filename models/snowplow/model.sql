@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW snowplow_analysis.events as (
+CREATE OR REPLACE VIEW {schema}.events as (
   SELECT
     "collector_tstamp"          as "timestamp",
     "event"                     as "event",
@@ -8,4 +8,4 @@ CREATE OR REPLACE VIEW snowplow_analysis.events as (
     atomic.events
 );
 
-COMMENT ON VIEW snowplow_analysis.event IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {schema}.event IS 'timeseries,funnel,cohort';

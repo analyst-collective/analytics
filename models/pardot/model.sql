@@ -1,7 +1,4 @@
-drop schema if exists pardot_analysis cascade;
-create schema pardot_analysis;
-
-create or replace view pardot_analysis.visitoractivity_types_meta as (
+create or replace view {schema}.visitoractivity_types_meta as (
 
   --these literal values are pulled from pardot's api docs here:
   --http://developer.pardot.com/kb/object-field-references/#visitor-activity
@@ -39,13 +36,13 @@ create or replace view pardot_analysis.visitoractivity_types_meta as (
   select 31, 'UserVoice Suggestion' union all
   select 32, 'UserVoice Comment' union all
   select 33, 'UserVoice Ticket' union all
-  select 34, 'Video Watched (≥ 75% watched)'
+  select 34, 'Video Watched (>= 75% watched)'
 
 );
 
 
 
-create or replace view pardot_analysis.visitoractivity_events_meta as (
+create or replace view {schema}.visitoractivity_events_meta as (
 
   --even with the type decoding that Pardot specifically provides, actually what is going on in a given event
   --is somewhat ambiguous. this is an attempt to map type and type_name to a more event-based "event action" field
@@ -86,7 +83,7 @@ create or replace view pardot_analysis.visitoractivity_events_meta as (
 );
 
 
-create or replace view pardot_analysis.visitoractivity as (
+create or replace view {schema}.visitoractivity as (
   --this table has a bunch of types that really should be event actions but are very poorly formulated.
   --the custom logic in this view is an attempt to fix that.
   --not all of the various type / type_name combinations have been accounted for yet; I still need to determine exactly what some of them mean.
@@ -97,11 +94,11 @@ create or replace view pardot_analysis.visitoractivity as (
     va.prospect_id      as user_id,
     va.*
   from
-    pardot_analysis.visitoractivity_filtered va
-    inner join pardot_analysis.visitoractivity_events_meta e
+    {schema}.visitoractivity_filtered va
+    inner join {schema}.visitoractivity_events_meta e
       on va."type" = e."type" and va.type_name = e.type_name
-    inner join pardot_analysis.visitoractivity_types_meta t
+    inner join {schema}.visitoractivity_types_meta t
       on va."type" = t."type"
 );
 
-COMMENT ON VIEW pardot_analysis.visitoractivity IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {schema}.visitoractivity IS 'timeseries,funnel,cohort';

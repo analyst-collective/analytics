@@ -1,51 +1,51 @@
 
-import sqlparse
-import psycopg2
-import sys, os
+import sqlparse, psycopg2, sys, os
 
-if __name__ == '__main__':
+class Runner(object):
+    def __init__(self, config, creds, models_dir):
+        self.config = config
+        self.creds = creds
+        self.models_dir = models_dir
 
-    if len(sys.argv) != 2:
-        print "Usage: {} [creds file]".format(sys.argv[0])
-        sys.exit(1)
+        #self.connection = psycopg2.connect(creds.conn_string)
 
-    creds_file = sys.argv[1]
+    def models(self):
+        return self.config['models']
 
-    conn_string = None
-    with open(creds_file) as creds_fh:
-        creds = creds_fh.read().strip().splitlines()
+    def drop_schema(self):
+        print "dropping schema {schema}".format(**self.config)
 
-        if len(creds) != 5:
-            raise RuntimeError("Credentials file {} invalid!".format(creds_file))
+    def create_schema(self):
+        print "creating schema {schema}".format(**self.config)
 
-        user, pw, host, port, db = creds
-        conn_string = "dbname='{}' port='{}' user='{}' password='{}' host='{}'".format(db, port, user, pw, host)
+    def clean_schema(self):
+        self.drop_schema()
+        self.create_schema()
 
-    connection = psycopg2.connect(conn_string)
+    def execute(self, sql):
+        debug = sql.replace("\n", " ").strip()[0:100]
+        print debug
+        pass
 
-    models = os.listdir("models")
+    def interpolate(self, sql):
+        try:
+            return sql.format(**self.config)
+        except KeyError as e:
+            print "Error interpolating key: {{{error_key}}} in model: {model}".format(error_key=str(e).replace("'", ""), model=model_name)
+            return None
 
-    for model in models:
-        print "MODEL {}".format(model)
+    def create_model(self, model_fh):
+        contents = model_fh.read()
+        statements = sqlparse.parse(contents);
+        for statement in statements:
+            sql = self.interpolate(str(statement))
+            if sql is None: continue # could throw an error here! Definitely don't execute the sql though
+            self.execute(sql)
 
-        path = os.path.join('models', model)
-        files = [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and f.endswith('.sql')]
+    def create_models(self):
+        for model_name in self.models():
+            # right now, this only checks for model.sql in the model dir. It can ideally load the SQL file DAG
+            model_file = os.path.join(self.models_dir, model_name, 'model.sql')
 
-        for filepath in sorted(files):
-            statements_to_execute = []
-
-            print "-FILE {}".format(filepath)
-            with open(filepath) as fh:
-                contents = fh.read()
-                statements = sqlparse.parse(contents);
-                for statement in statements:
-                    num_significant_statements = [token for token in statement.tokens if not token.is_whitespace()]
-                    if len(num_significant_statements) == 0:
-                        continue
-                    statements_to_execute.append(statement)
-
-            for statement in statements_to_execute:
-                print str(statement)[0:100].replace("\n", " ") + ("..." if len(str(statement)) > 99 else "")
-                # TODO : execute query here
-            print
-        print
+            with open(model_file) as model_fh:
+                self.create_model(model_fh)
