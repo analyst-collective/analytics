@@ -26,10 +26,9 @@ class Runner(object):
         self.create_schema()
 
     def execute(self, sql):
-        debug = sql.replace("\n", " ").strip()[0:100]
-        print debug
-
-        #self.cursor.execute(sql)
+        debug = sql.replace("\n", " ").strip()[0:200]
+        print "Running: {}".format(debug)
+        self.cursor.execute(sql)
 
     def interpolate(self, sql, model_name=""):
         try:
@@ -57,6 +56,7 @@ class Runner(object):
                 prefixed = self.add_prefix(str(statement), model_name)
                 sql = self.interpolate(prefixed, model_name)
 
-                if sql is None: continue # could throw an error here! Definitely don't execute the sql though
+                if sql is None or len(sql.strip()) == 0: continue # could throw an error here! Definitely don't execute the sql though
+
                 self.execute(sql)
 
