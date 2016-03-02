@@ -13,7 +13,7 @@ class Runner(object):
         return self.config['models']
 
     def drop_schema(self):
-        sql = self.interpolate("drop schema if exists {schema}")
+        sql = self.interpolate("drop schema if exists {schema} cascade")
         self.execute(sql)
 
     def create_schema(self):

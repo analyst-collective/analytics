@@ -8,4 +8,4 @@ CREATE OR REPLACE VIEW {schema}.events as (
     atomic.events
 );
 
-COMMENT ON VIEW {schema}.event IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {schema}.events IS 'timeseries,funnel,cohort';
