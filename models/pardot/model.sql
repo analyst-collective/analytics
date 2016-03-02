@@ -94,7 +94,7 @@ create or replace view {schema}.visitoractivity as (
     va.prospect_id      as user_id,
     va.*
   from
-    {schema}.visitoractivity_filtered va
+    olga_pardot.visitoractivity va
     inner join {schema}.visitoractivity_events_meta e
       on va."type" = e."type" and va.type_name = e.type_name
     inner join {schema}.visitoractivity_types_meta t
