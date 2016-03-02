@@ -1,6 +1,3 @@
-drop schema if exists snowplow_analysis cascade;
-create schema snowplow_analysis;
-
 CREATE OR REPLACE VIEW snowplow_analysis.events as (
   SELECT
     "collector_tstamp"          as "timestamp",

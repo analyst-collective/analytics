@@ -1,0 +1,4 @@
+{
+	"models" : ["pardot", "segment", "snowplow"],
+	"prefix" : "@ac_"
+}
