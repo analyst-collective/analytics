@@ -16,5 +16,5 @@ create or replace view {schema}.card_location as (
   from trello_growth.trello_actions
   where
     data__card__id is not null
-    and "type" in ('createCard', 'updateCard', 'moveCardFromBoard', 'moveCardToBoard')
+    and "type" in ('createCard', 'updateCard', 'moveCardFromBoard', 'moveCardToBoard', 'commentCard')
 );
