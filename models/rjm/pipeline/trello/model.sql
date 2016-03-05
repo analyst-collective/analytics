@@ -1,7 +1,7 @@
 create or replace view {schema}.card_location as (
   select
     id,
-	idmembercreator,
+    idmembercreator,
     date,
     "type",
     data__card__id,
