@@ -1,3 +1,0 @@
-these models are not yet finalized. we're still working on the auto-generation script, and once that script is completed and the initial load from pipeline is completed (so that we can actually grab the model from it) we will be able to generate and then check in.
-
-the only file with significant custom work on it at this point is transformed.sql, which has some custom logic built for that table specifically.
