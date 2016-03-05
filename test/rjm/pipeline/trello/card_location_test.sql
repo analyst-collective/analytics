@@ -1,5 +1,5 @@
 select id
-  from card_locations
+  from analyst_collective.trello_card_location
 where
-  data_card_closed = true
+  data__card__closed = true
   and data__list__id is not null; -- assertEmpty
