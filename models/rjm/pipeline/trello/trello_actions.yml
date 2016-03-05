@@ -1,0 +1,25 @@
+---
+namespace: com.rjmetrics.pipeline.trello.trello_actions
+description: "An stream of events about all trello objects (cards, lists, boards, orgs, members)"
+fields:
+  - name: id
+    type: varchar(255)
+  - name: date
+    type: varchar(255)
+  - name: idmembercreator
+    type: varchar(255)
+  - name: data__board__id
+    type: varchar(255)
+  - name: data__card__id
+    type: varchar(255)
+  - name: data__list__id
+    type: varchar(255)
+keys:
+  - primary: [id]
+references:
+  - data__board__id: com.rjmetrics.pipeline.trello.trello_boards.id
+  - data__card__id: com.rjmetrics.pipeline.trello.trello_cards.id
+  - data__list__id: com.rjmetrics.pipeline.trello.trello_lists.id
+engine_options:
+  redshift:
+    sortkey: [date]
