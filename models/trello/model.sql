@@ -1,4 +1,4 @@
-create or replace view {schema}.card_location as (
+create or replace view {{ schema }}.{{ model }}_card_location as (
   select
     id,
     idmembercreator,

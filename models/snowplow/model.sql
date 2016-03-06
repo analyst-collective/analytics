@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW {schema}.events as (
+CREATE OR REPLACE VIEW {{ schema }}.{{ model }}_events as (
   SELECT
     "collector_tstamp"          as "@timestamp",
     "event"                     as "@event",
@@ -8,4 +8,4 @@ CREATE OR REPLACE VIEW {schema}.events as (
     atomic.events
 );
 
-COMMENT ON VIEW {schema}.events IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {{ schema }}.{{ model }}_events IS 'timeseries,funnel,cohort';

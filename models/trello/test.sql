@@ -1,4 +1,4 @@
-create or replace view {schema}.model_tests
+create or replace view {{ schema }}.{{ model }}_model_tests
 (name, description, result)
 as (
   with null_boards_or_lists as

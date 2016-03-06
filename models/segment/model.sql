@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW {schema}.track as (
+CREATE OR REPLACE VIEW {{ schema }}.{{ model }}_track as (
   SELECT
     "timestamp"::timestamp  as "@timestamp",
     "event"                 as "@event",
@@ -9,4 +9,4 @@ CREATE OR REPLACE VIEW {schema}.track as (
     segment.track
 );
 
-COMMENT ON VIEW {schema}.track IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {{ schema }}.{{ model }}_track IS 'timeseries,funnel,cohort';
