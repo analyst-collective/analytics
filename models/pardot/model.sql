@@ -101,4 +101,4 @@ create or replace view {schema}.visitoractivity as (
       on va."type" = t."type"
 );
 
-COMMENT ON VIEW {schema}.visitoractivity IS 'timeseries,funnel,cohort';
+comment on view {schema}.visitoractivity is 'timeseries,funnel,cohort';
