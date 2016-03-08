@@ -1,11 +1,11 @@
-CREATE OR REPLACE VIEW {schema}.events as (
-  SELECT
+create or replace view {schema}.events as (
+  select
     "collector_tstamp"          as "@timestamp",
-    "event_name"                     as "@event",
+    "event_name"                as "@event",
     "domain_userid"             as "@user_id",
     *
-  FROM
+  from
     atomic.events
 );
 
-COMMENT ON VIEW {schema}.events IS 'timeseries,funnel,cohort';
+comment on view {schema}.events is 'timeseries,funnel,cohort';
