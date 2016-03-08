@@ -12,17 +12,12 @@ class Runner(object):
     def models(self):
         return self.config['models']
 
-    def drop_schema(self):
-        sql = self.interpolate("drop schema if exists {schema} cascade")
-        self.execute(sql)
-
-    def create_schema(self):
-        sql = self.interpolate("create schema {schema}")
+    def try_create_schema(self):
+        sql = self.interpolate("create schema if not exists {schema}")
         self.execute(sql)
 
     def clean_schema(self):
-        self.drop_schema()
-        self.create_schema()
+        self.try_create_schema()
 
     def execute(self, sql):
         debug = sql.replace("\n", " ").strip()[0:200]
@@ -37,7 +32,7 @@ class Runner(object):
             return sql.format(model=model_name, **self.config)
         except KeyError as e:
             print "Error interpolating key: {{{error_key}}} in model: {model}".format(error_key=str(e).replace("'", ""), model=model_name)
-            return None
+            return ""
 
     def add_prefix(self, uninterpolated_sql, model):
         match = "{schema}."
@@ -49,7 +44,7 @@ class Runner(object):
             # right now, this only checks for model.sql in the model dir. It can ideally load the SQL file DAG
             model_file = os.path.join(self.models_dir, model_name, 'model.sql')
 
-            contents = None
+            contents = ""
             with open(model_file) as model_fh:
                 contents = model_fh.read()
 
@@ -58,7 +53,9 @@ class Runner(object):
                 prefixed = self.add_prefix(str(statement), model_name)
                 sql = self.interpolate(prefixed, model_name)
 
-                if sql is None or len(sql.strip()) == 0: continue # could throw an error here! Definitely don't execute the sql though
+                if len(sql.strip()) == 0:
+                    # we could throw an error here! Definitely don't execute the sql though
+                    continue
 
                 self.execute(sql)
 
