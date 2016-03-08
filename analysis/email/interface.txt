@@ -1,0 +1,22 @@
+########################################
+#       Email Interface                #
+########################################
+
+timestamp     timestamp
+event         varchar
+user_id       varchar
+email_id      varchar
+details       varchar
+
+
+The following events are need for the basic email interface:
+- send
+- open
+- click
+
+The following events are need for the extended email interface:
+- hard bounce
+- soft bounce
+- subscribe
+- unsubscribe
+- spam complaint
