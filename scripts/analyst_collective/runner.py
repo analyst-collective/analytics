@@ -1,5 +1,5 @@
 
-import sqlparse, psycopg2, sys, os
+import sqlparse, psycopg2, sys, os, fnmatch
 
 class Runner(object):
     def __init__(self, config, creds, models_dir):
@@ -10,7 +10,7 @@ class Runner(object):
         self.connection = psycopg2.connect(creds.conn_string)
 
     def models(self):
-        return self.config['models']
+        return set(self.config['models'])
 
     def try_create_schema(self):
         sql = self.interpolate("create schema if not exists {schema}")
@@ -39,23 +39,40 @@ class Runner(object):
         replace = "{schema}.{model}_"
         return uninterpolated_sql.replace(match, replace)
 
+    def __model_files(self):
+        """returns a dictionary like
+{'pardot': ['pardot/model.sql'],
+ 'segment': ['segment/model.sql'],
+ 'snowplow': ['snowplow/model.sql'],
+ 'trello': ['trello/model.sql', 'trello/test.sql']}
+"""
+        indexed_files = {}
+        for root, dirs, files in os.walk(self.models_dir):
+            for filename in files:
+                if fnmatch.fnmatch(filename, "*.sql"):
+                    abs_path = os.path.join(root, filename)
+                    rel_path = os.path.relpath(abs_path, self.models_dir)
+                    namespace = os.path.dirname(rel_path).replace('/', '.')
+                    indexed_files.setdefault(namespace, []).append(rel_path)
+        return indexed_files
+
     def create_models(self):
-        for model_name in self.models():
-            # right now, this only checks for model.sql in the model dir. It can ideally load the SQL file DAG
-            model_file = os.path.join(self.models_dir, model_name, 'model.sql')
+        for namespace, files in self.__model_files().iteritems():
+            if namespace not in self.models():
+                continue
 
-            contents = ""
-            with open(model_file) as model_fh:
-                contents = model_fh.read()
+            for f in sorted(files):
+                model_file = os.path.join(self.models_dir, f)
+                contents = ""
+                with open(model_file) as model_fh:
+                    contents = model_fh.read()
 
-            statements = sqlparse.parse(contents);
-            for statement in statements:
-                prefixed = self.add_prefix(str(statement), model_name)
-                sql = self.interpolate(prefixed, model_name)
+                statements = sqlparse.parse(contents)
+                for statement in statements:
+                    prefixed = self.add_prefix(str(statement), namespace)
+                    sql = self.interpolate(prefixed, namespace)
 
-                if len(sql.strip()) == 0:
-                    # we could throw an error here! Definitely don't execute the sql though
-                    continue
+                    if sql is None or len(sql.strip()) == 0:
+                        continue # could throw an error here! Definitely don't execute the sql though
 
-                self.execute(sql)
-
+                    self.execute(sql)
