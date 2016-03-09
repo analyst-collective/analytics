@@ -1,12 +1,12 @@
-CREATE OR REPLACE VIEW {schema}.track as (
-  SELECT
+create or replace view {schema}.track as (
+  select
     "timestamp"::timestamp  as "@timestamp",
     "event"                 as "@event",
     "userid"                as "@user_id",
     *
 
-  FROM
+  from
     segment.track
 );
 
-COMMENT ON VIEW {schema}.track IS 'timeseries,funnel,cohort';
+comment on view {schema}.track is 'timeseries,funnel,cohort';

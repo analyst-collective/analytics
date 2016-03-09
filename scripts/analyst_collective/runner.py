@@ -12,17 +12,12 @@ class Runner(object):
     def models(self):
         return set(self.config['models'])
 
-    def drop_schema(self):
-        sql = self.interpolate("drop schema if exists {schema} cascade")
-        self.execute(sql)
-
-    def create_schema(self):
-        sql = self.interpolate("create schema {schema}")
+    def try_create_schema(self):
+        sql = self.interpolate("create schema if not exists {schema}")
         self.execute(sql)
 
     def clean_schema(self):
-        self.drop_schema()
-        self.create_schema()
+        self.try_create_schema()
 
     def execute(self, sql):
         debug = sql.replace("\n", " ").strip()[0:200]
@@ -37,7 +32,7 @@ class Runner(object):
             return sql.format(model=model_name, **self.config)
         except KeyError as e:
             print "Error interpolating key: {{{error_key}}} in model: {model}".format(error_key=str(e).replace("'", ""), model=model_name)
-            return None
+            return ""
 
     def add_prefix(self, uninterpolated_sql, model):
         match = "{schema}."
@@ -68,8 +63,7 @@ class Runner(object):
 
             for f in sorted(files):
                 model_file = os.path.join(self.models_dir, f)
-
-                contents = None
+                contents = ""
                 with open(model_file) as model_fh:
                     contents = model_fh.read()
 
