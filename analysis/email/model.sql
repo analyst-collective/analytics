@@ -26,7 +26,7 @@ create or replace view {schema}.emails_denormalized as (
     from events
     where "@event" = 'email click'
 
-  ), emails as (
+  )
 
     select s."@user_id", s."@timestamp" as sent_timestamp, o."@timestamp" as opened_timestamp, c."@timestamp" as clicked_timestamp,
       decode(o."@timestamp", null, 0, 1) as "opened?",
@@ -37,5 +37,4 @@ create or replace view {schema}.emails_denormalized as (
       left outer join clicks c on s."@email_id" = c."@email_id"
     order by 1, 2
 
-  )
 );

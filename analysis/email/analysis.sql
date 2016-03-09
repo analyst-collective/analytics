@@ -1,53 +1,27 @@
 /*
 
-This analysis gets you a simple funnel of sent > opened > clicked emails for all-time.
-
-*/
-
-with events as (
-
-  select * from analyst_collective.pardot_email
-
-),
-
-funnel_order as (
-
-  select 'email sent' as event, 1 as "@order" union all
-  select 'email opened', 2 union all
-  select 'email click', 3
-
-)
-
---cr stands for conversion rate
-  select e."@event", count(*),
-    count(*)::float / lag(count(*)) over (order by fo."@order")::float as cr,
-    count(distinct e."@user_id") as distinct_users,
-    count(distinct e."@user_id")::float / lag(count(distinct e."@user_id")) over (order by fo."@order")::float as distinct_cr
-  from events e
-    inner join funnel_order fo on e."@event" = fo.event
-  group by 1, fo."@order"
-  order by fo."@order"
- ;
-
-
-
-
-/*
-
 This analysis gets you a simple timeseries of sent > opened > clicked emails for all-time.
 
 */
 
 
- with events as (
+with events as (
 
-   select * from analyst_collective.pardot_email
+  select * from analyst_collective.emails_denormalized
 
- )
+)
 
- select "@event", date_trunc('week', "@timestamp"), count(*)
-   from events
-  group by 1, 2;
+select
+  date_trunc('month', "sent_timestamp") as mnth,
+  count(*) as sends,
+  sum("opened?") as opens,
+  sum("clicked?") as clicks,
+  avg("opened?"::float) as open_rate,
+  avg("clicked?"::float) as click_rate
+from events
+group by 1
+order by 1
+;
 
 
 
@@ -106,7 +80,7 @@ order by 1
 
 /*
 
-Other analysis I want to do:
+Other analysis I still want to do:
  - cohort analysis of email engagement vs first email send date.
  - anomaly detection for email performance: particularly good or bad email subject lines by open rate. leave out bottom 20% of send volume.
  - likelihood of opening / clicking by length (time or # of emails) of user inactivity
