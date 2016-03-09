@@ -110,7 +110,7 @@ It conforms to the basic email interface, not the extended email interface, beca
 data necessary to conform to the extended interface.
 */
 
-create or replace view {schema}.email as (
+create or replace view {schema}.emails as (
 
   select "@timestamp", "@event", "@user_id", email_id as "@email_id", details as "@subject"
     from {schema}.visitoractivity
