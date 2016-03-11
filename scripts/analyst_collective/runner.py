@@ -17,7 +17,7 @@ class Runner(object):
         self.execute(sql)
 
     def create_schema(self):
-        sql = self.interpolate("create schema if not exists {schema}")
+        sql = self.interpolate("create schema {schema}")
         self.execute(sql)
 
     def clean_schema(self):
