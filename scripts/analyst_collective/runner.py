@@ -12,12 +12,17 @@ class Runner(object):
     def models(self):
         return set(self.config['models'])
 
-    def try_create_schema(self):
-        sql = self.interpolate("create schema if not exists {schema}")
+    def drop_schema(self):
+        sql = self.interpolate("drop schema if exists {schema} cascade")
+        self.execute(sql)
+
+    def create_schema(self):
+        sql = self.interpolate("create schema {schema}")
         self.execute(sql)
 
     def clean_schema(self):
-        self.try_create_schema()
+        self.drop_schema()
+        self.create_schema()
 
     def execute(self, sql):
         debug = sql.replace("\n", " ").strip()[0:200]
