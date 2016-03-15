@@ -6,6 +6,7 @@ create or replace view {schema}.ppc_consolidated_summary as (
       (
         select
           'Google' as "@adnetwork",
+          "@campaign_name",
           "@utm_source",
           "@utm_medium",
           "@utm_campaign",
@@ -29,6 +30,7 @@ create or replace view {schema}.ppc_consolidated_summary as (
   --     (
   --       select
   --         'Facebook' as "@adnetwork",
+  --         "@campaign_name",
   --         "@utm_source",
   --         "@utm_medium",
   --         "@utm_campaign",

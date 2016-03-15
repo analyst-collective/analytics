@@ -13,6 +13,7 @@ create or replace view {schema}.adwords_summary as (
     REPLACE(REGEXP_SUBSTR(cleanurl,'utm_campaign=[^&]*'),'utm_campaign=','') as "@utm_campaign",
     REPLACE(REGEXP_SUBSTR(cleanurl,'utm_content=[^&]*'),'utm_content=','') as "@utm_content",
     REPLACE(REGEXP_SUBSTR(cleanurl,'utm_term=[^&]*'),'utm_term=','') as "@utm_term",
+    campaign as "@campaign_name"
     impressions::integer as "@impressions",
     adcost::float as "@cost",
     date::date as "@date",
