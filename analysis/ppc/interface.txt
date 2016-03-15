@@ -3,6 +3,7 @@
 ########################################
 
 adnetwork     varchar
+campaign_name varchar
 utm_source    varchar
 utm_medium    varchar
 utm_campaign  varchar
