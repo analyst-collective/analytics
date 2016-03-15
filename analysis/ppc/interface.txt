@@ -1,0 +1,16 @@
+########################################
+#         PPC Interface                #
+########################################
+
+adnetwork     varchar
+campaign_name varchar
+utm_source    varchar
+utm_medium    varchar
+utm_campaign  varchar
+utm_content   varchar
+utm_term      varchar
+impressions   integer
+cost          float
+clicks        integer
+date          date
+base_url      varchar
