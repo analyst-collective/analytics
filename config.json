@@ -1,4 +1,4 @@
 {
-    "models" : ["pardot", "segment", "snowplow", "trello"],
-    "schema" : "analyst_collective"
+    "models" : ["zuora"],
+    "schema" : "ac_yevgeniy"
 }
