@@ -1,0 +1,7 @@
+# Test configuration
+test-paths: ["test"]
+
+# Compile configuration
+source-paths: ["models"]   # paths with source code to compile
+target-path: "target"     # path for compiled code
+clean-targets: ["target"] # directories removed by the clean task

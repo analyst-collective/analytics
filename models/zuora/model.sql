@@ -1,4 +1,4 @@
-create or replace view {schema}.account as
+create or replace view {{env.schema}}.account as
 (
     select
         id as account_id,
@@ -8,7 +8,7 @@ create or replace view {schema}.account as
 );
 
 
-create or replace view {schema}.subscription as
+create or replace view {{env.schema}}.subscription as
 (
     select
         id                                  as subscr_id,
@@ -24,7 +24,7 @@ create or replace view {schema}.subscription as
     from zuora.zuora_subscription
 );
 
-create or replace view {schema}.rate_plan as
+create or replace view {{env.schema}}.rate_plan as
 (
     select
         id              as rate_plan_id,
@@ -34,7 +34,7 @@ create or replace view {schema}.rate_plan as
 );
 
 
-create or replace view {schema}.rate_plan_charge as
+create or replace view {{env.schema}}.rate_plan_charge as
 (
     select
         rateplanid                      as rate_plan_id,
@@ -47,7 +47,7 @@ create or replace view {schema}.rate_plan_charge as
 );
 
 
-create or replace view {schema}.amendment as
+create or replace view {{env.schema}}.amendment as
 (
     select
         id                          as amend_id,
@@ -58,6 +58,37 @@ create or replace view {schema}.amendment as
 );
 
 
+
+create or replace view {{env.schema}}.rate_plan_charges as
+(
+    -- get all subscriptions with possible ammendments for all accounts
+    with subscr_w_amendments as
+    (
+        select
+            account_number, acc.account_id, sub.subscr_id,
+            subscr_name, subscr_status, subscr_term_type, 
+            subscr_start, subscr_end, subscr_version, amend_id, amend_start
+        from ac_yevgeniy.zuora_account acc
+        inner join ac_yevgeniy.zuora_subscription sub
+            on acc.account_id = sub.account_id
+        -- add ammendments
+        left outer join ac_yevgeniy.zuora_amendment amend
+            on sub.subscr_id = amend.subscr_id
+    )
+
+    select
+        account_number, account_id, sub.subscr_id,
+        subscr_name, subscr_status, subscr_term_type, 
+        subscr_start, subscr_end, subscr_version, amend_id, amend_start,
+        rpc_start, rpc_end, rpc_last_segment,
+        min(subscr_start) over() as first_subscr,
+        "@mrr" as mrr
+    from subscr_w_amendments sub
+    inner join ac_yevgeniy.zuora_rate_plan rp
+        on rp.subscr_id = sub.subscr_id
+    inner join ac_yevgeniy.zuora_rate_plan_charge rpc
+        on rpc.rate_plan_id = rp.rate_plan_id
+);
 
 
 
