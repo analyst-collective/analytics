@@ -1,4 +1,4 @@
-create or replace view {schema}.model_tests
+create or replace view {{env.schema}}.pardot_model_tests
  (name, description, result)
  as (
 
@@ -6,7 +6,7 @@ create or replace view {schema}.model_tests
      'visitoractivity_fresher_than_one_day',
      'Most recent visitoractivity entry is no more than one day old',
  	max("@timestamp"::timestamp) > current_date - '1 day'::interval
- 	from {schema}.visitoractivity
+ 	from {{env.schema}}.pardot_visitoractivity
 
  );
 
