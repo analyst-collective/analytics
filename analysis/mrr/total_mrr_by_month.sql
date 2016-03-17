@@ -1,5 +1,11 @@
 with
 
+subscriptions as
+(
+	select *
+	from {{env.schema}}.zuora_subscriptions_w_charges_and_amendments
+)
+
 -- genereate calendar dates, starting with the first subscription date
 dates as
 (
@@ -7,7 +13,7 @@ dates as
 	from
 	(
 		select (first_subscr + row_number() over (order by true))::date as date_day
-		from {{env.schema}}.zuora_subscriptions_w_charges_and_amendments
+		from subscriptions
 	)
 	where date_day <= current_date
 ),
@@ -24,7 +30,7 @@ charges_up_to_each_date as
 		max(date_day) over (partition by subscr_name, dateadd(month,1,date_month)) as max_subscr_trunc_date,
 		max(subscr_version) over (partition by subscr_name, date_month) as max_subscr_version_within_date
 	from dates a
-	left join {{env.schema}}.zuora_subscriptions_w_charges_and_amendments b
+	left join subscriptions b
 		on 1=1
 		and rpc_start <= date_day
 		and rpc_last_segment = 'TRUE'
