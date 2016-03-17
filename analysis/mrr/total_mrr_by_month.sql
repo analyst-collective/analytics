@@ -4,7 +4,7 @@ subscriptions as
 (
 	select *
 	from {{env.schema}}.zuora_subscriptions_w_charges_and_amendments
-)
+),
 
 -- genereate calendar dates, starting with the first subscription date
 dates as
