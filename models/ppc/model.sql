@@ -1,3 +1,6 @@
+-- assuming there is google adwords and facebook ads.
+-- need to make this flexible such that we can detect any relevant paid ad platforms and union them in.
+
 create or replace view {schema}.ppc_consolidated_summary as (
   (
     select 

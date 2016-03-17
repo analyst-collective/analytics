@@ -1,8 +1,8 @@
-create or replace view ac_hhund.facebook_ads_summary as (
+create or replace view {schema}.facebook_ads_summary as (
   with ad_data as
     (
     select
-      ag.name as "adgroup_name",
+      ag.name as adgroup_name,
       lower(nvl(object_url,link_url,object_story_spec__link_data__link)) as addestinationurl,
       i.*
     from
