@@ -7,7 +7,7 @@ create or replace view {{env.schema}}.stripe_invoices as (
     subscription as subscription_id,
     total
   from
-    demo_data.invoices
+    demo_data.stripe_invoices
 
 );
 
@@ -17,17 +17,17 @@ create or replace view {{env.schema}}.stripe_subscriptions as (
     id,
     plan__id as plan_id
   from
-    demo_data.subscriptions
+    demo_data.stripe_subscriptions
 
 );
 
 create or replace view {{env.schema}}.stripe_plans as (
 
   select
-    production.vero_stripe_production.stripe_plans.id               as id,
-    production.vero_stripe_production.stripe_plans.interval         as interval
+    id,
+    interval
   from
-    production.vero_stripe_production.stripe_plans
+    demo_data.stripe_plans
 
 );
 
@@ -45,7 +45,7 @@ create or replace view {{env.schema}}.stripe_invoices_transformed as (
       i.paid                    as paid,
       case  p.interval
         when 'yearly'
-        then i.total / 12 / 100 
+        then i.total / 12 / 100
         else i.total / 100
       end                                                       as total,
       row_number() over(
