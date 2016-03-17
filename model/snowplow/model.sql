@@ -1,4 +1,4 @@
-create or replace view {schema}.events as (
+create or replace view {{env.schema}}.snowplow_events as (
   select
     "collector_tstamp"          as "@timestamp",
     "event_name"                as "@event",
@@ -8,4 +8,4 @@ create or replace view {schema}.events as (
     atomic.events
 );
 
-comment on view {schema}.events is 'timeseries,funnel,cohort';
+comment on view {{env.schema}}.snowplow_events is 'timeseries,funnel,cohort';

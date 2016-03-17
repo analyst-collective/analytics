@@ -1,7 +1,12 @@
-# Test configuration
-test-paths: ["test"]
-
 # Compile configuration
-source-paths: ["models"]   # paths with source code to compile
+source-paths: ["model"]   # paths with source code to compile
 target-path: "target"     # path for compiled code
 clean-targets: ["target"] # directories removed by the clean task
+
+# Run configuration
+# output environments
+
+run-target: my_redshift
+
+# Test configuration
+test-paths: ["test"]

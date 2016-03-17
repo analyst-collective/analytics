@@ -1,4 +1,4 @@
-create or replace view {schema}.visitoractivity_types_meta as (
+create or replace view {{env.schema}}.pardot_visitoractivity_types_meta as (
 
   --these literal values are pulled from pardot's api docs here:
   --http://developer.pardot.com/kb/object-field-references/#visitor-activity
@@ -42,18 +42,18 @@ create or replace view {schema}.visitoractivity_types_meta as (
 
 
 
-create or replace view {schema}.visitoractivity_events_meta as (
+create or replace view {{env.schema}}.pardot_visitoractivity_events_meta as (
 
   --even with the type decoding that Pardot specifically provides, actually what is going on in a given event
   --is somewhat ambiguous. this is an attempt to map type and type_name to a more event-based "event action" field
-  --which is always written in more standard action-oriented terms. 
+  --which is always written in more standard action-oriented terms.
   select 22 as "type", 'Chat Transcript' as type_name, 'chatted via olark' as event_name union all
   select 21, 'Custom Redirect', 'clicked a custom redirect' union all
-  select 6, 'Email', 'sent an email' union all
-  select 11, 'Email', 'opened an email' union all
-  select 13, 'Email', 'bounced email' union all
-  select 14, 'Email', 'reported spam' union all
-  select 1, 'Email Tracker', 'clicked on email link' union all
+  select 6, 'Email', 'email sent' union all
+  select 11, 'Email', 'email opened' union all
+  select 13, 'Email', 'email bounced' union all
+  select 14, 'Email', 'email reported spam' union all
+  select 1, 'Email Tracker', 'email click' union all
   select 28, 'Event', 'registered for event' union all
   select 29, 'Event', 'checked in at event' union all
   select 2, 'File', 'viewed a file' union all
@@ -83,22 +83,37 @@ create or replace view {schema}.visitoractivity_events_meta as (
 );
 
 
-create or replace view {schema}.visitoractivity as (
+create or replace view {{env.schema}}.pardot_visitoractivity as (
   --this table has a bunch of types that really should be event actions but are very poorly formulated.
   --the custom logic in this view is an attempt to fix that.
   --not all of the various type / type_name combinations have been accounted for yet; I still need to determine exactly what some of them mean.
   select
     -- event_stream interface
     va.created_at       as "@timestamp",
-    t.type_decoded      as "@event",
+    e.event_name        as "@event",
     va.prospect_id      as "@user_id",
     va.*
   from
     olga_pardot.visitoractivity va
-    inner join {schema}.visitoractivity_events_meta e
+    inner join {{env.schema}}.pardot_visitoractivity_events_meta e
       on va."type" = e."type" and va.type_name = e.type_name
-    inner join {schema}.visitoractivity_types_meta t
+    inner join {{env.schema}}.pardot_visitoractivity_types_meta t
       on va."type" = t."type"
 );
 
-comment on view {schema}.visitoractivity is 'timeseries,funnel,cohort';
+COMMENT ON VIEW {{env.schema}}.pardot_visitoractivity IS 'timeseries,funnel,cohort';
+
+
+/*
+This model maps pardot data from the visitoractivity table to the email analysis interface.
+It conforms to the basic email interface, not the extended email interface, because Pardot does not supply
+data necessary to conform to the extended interface.
+*/
+
+create or replace view {{env.schema}}.emails as (
+
+  select "@timestamp", "@event", "@user_id", email_id as "@email_id", details as "@subject"
+    from {{env.schema}}.pardot_visitoractivity
+   where "@event" in ('email sent', 'email opened', 'email click')
+
+);
