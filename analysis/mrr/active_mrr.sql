@@ -1,7 +1,8 @@
+with
 charges_for_active_plans as
 (
 	select *
-	from ac_yevgeniy.rate_plan_charges
+	from {{env.schema}}.zuora_subscriptions_w_charges_and_amendments
 	where
 		-- make sure the subscription is active
 		subscr_status = 'Active'
