@@ -1,1 +1,6 @@
+
+dbcredentials.txt
+env
+*.pyc
+config.json
 /target
