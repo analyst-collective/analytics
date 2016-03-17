@@ -7,7 +7,7 @@ This analysis gets you a simple timeseries of sent > opened > clicked emails for
 
 with events as (
 
-  select * from analyst_collective.emails_denormalized
+  select * from {{env.schema}}.emails_denormalized
 
 )
 
@@ -35,7 +35,7 @@ Do people stop engaging with emails the more emails they have been sent?
 
 with emails as (
 
-  select * from analyst_collective.emails_denormalized
+  select * from {{env.schema}}.emails_denormalized
 
 )
 
@@ -63,7 +63,7 @@ This interface doesn't contain unsubscribe data.
 
 with emails as (
 
-  select * from analyst_collective.emails_denormalized
+  select * from {{env.schema}}.emails_denormalized
 
 )
 

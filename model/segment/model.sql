@@ -1,4 +1,4 @@
-create or replace view {schema}.track as (
+create or replace view {{env.schema}}.segment_track as (
   select
     "timestamp"::timestamp  as "@timestamp",
     "event"                 as "@event",
@@ -9,4 +9,4 @@ create or replace view {schema}.track as (
     segment.track
 );
 
-comment on view {schema}.track is 'timeseries,funnel,cohort';
+comment on view {{env.schema}}.segment_track is 'timeseries,funnel,cohort';

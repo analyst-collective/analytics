@@ -1,8 +1,8 @@
-create or replace view {schema}.emails_denormalized as (
+create or replace view {{env.schema}}.emails_denormalized as (
 
   with events as (
 
-    select * from {schema}.emails
+    select * from {{env.schema}}.emails
 
   ),
 

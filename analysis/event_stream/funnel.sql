@@ -1,6 +1,6 @@
 WITH
 source as (
-  select * from analyst_collective.snowplow_events -- change this view for your analysis
+  select * from {{env.schema}}.snowplow_events -- change this view for your analysis
 ),
 step_1 as (
   SELECT MIN("@timestamp") as "@timestamp", "@user_id"

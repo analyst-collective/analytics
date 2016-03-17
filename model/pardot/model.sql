@@ -1,4 +1,4 @@
-create or replace view {schema}.visitoractivity_types_meta as (
+create or replace view {{env.schema}}.pardot_visitoractivity_types_meta as (
 
   --these literal values are pulled from pardot's api docs here:
   --http://developer.pardot.com/kb/object-field-references/#visitor-activity
@@ -42,7 +42,7 @@ create or replace view {schema}.visitoractivity_types_meta as (
 
 
 
-create or replace view {schema}.visitoractivity_events_meta as (
+create or replace view {{env.schema}}.pardot_visitoractivity_events_meta as (
 
   --even with the type decoding that Pardot specifically provides, actually what is going on in a given event
   --is somewhat ambiguous. this is an attempt to map type and type_name to a more event-based "event action" field
@@ -83,7 +83,7 @@ create or replace view {schema}.visitoractivity_events_meta as (
 );
 
 
-create or replace view {schema}.visitoractivity as (
+create or replace view {{env.schema}}.pardot_visitoractivity as (
   --this table has a bunch of types that really should be event actions but are very poorly formulated.
   --the custom logic in this view is an attempt to fix that.
   --not all of the various type / type_name combinations have been accounted for yet; I still need to determine exactly what some of them mean.
@@ -95,13 +95,13 @@ create or replace view {schema}.visitoractivity as (
     va.*
   from
     olga_pardot.visitoractivity va
-    inner join {schema}.visitoractivity_events_meta e
+    inner join {{env.schema}}.pardot_visitoractivity_events_meta e
       on va."type" = e."type" and va.type_name = e.type_name
-    inner join {schema}.visitoractivity_types_meta t
+    inner join {{env.schema}}.pardot_visitoractivity_types_meta t
       on va."type" = t."type"
 );
 
-COMMENT ON VIEW {schema}.visitoractivity IS 'timeseries,funnel,cohort';
+COMMENT ON VIEW {{env.schema}}.pardot_visitoractivity IS 'timeseries,funnel,cohort';
 
 
 /*
@@ -110,10 +110,10 @@ It conforms to the basic email interface, not the extended email interface, beca
 data necessary to conform to the extended interface.
 */
 
-create or replace view {schema}.emails as (
+create or replace view {{env.schema}}.emails as (
 
   select "@timestamp", "@event", "@user_id", email_id as "@email_id", details as "@subject"
-    from {schema}.visitoractivity
+    from {{env.schema}}.pardot_visitoractivity
    where "@event" in ('email sent', 'email opened', 'email click')
 
 );
