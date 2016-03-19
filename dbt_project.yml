@@ -1,6 +1,6 @@
 #settings specifically for this models directory
 #config other dbt settings within ~/.dbt/profiles.yml
-source-paths: ["model"]
+source-paths: ["models"]
 target-path: "target"
 clean-targets: ["target"]
 test-paths: ["test"]
