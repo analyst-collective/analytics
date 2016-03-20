@@ -35,8 +35,8 @@ SELECT
   base_price as "price",
   1 - (products.cost / base_price) as "profit margin",
   SUM(order_items.base_price) - (products.cost * count(order_items.item_id)) as "profit"
-FROM {{env.schema}}.magento_order_items
-RIGHT JOIN {{env.schema}}.magento_catalog_product_flat_1 as products
+FROM {{env.schema}}.order_items
+RIGHT JOIN {{env.schema}}.products
 ON products.entity_id = order_items.product_id
 GROUP BY products.name, order_items.base_price
 ORDER BY count(order_items.item_id) desc;
