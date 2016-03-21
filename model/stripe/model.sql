@@ -5,6 +5,7 @@ create or replace view {{env.schema}}.stripe_invoices as (
     date,
     forgiven,
     subscription as subscription_id,
+    paid,
     total
   from
     demo_data.stripe_invoices
@@ -45,8 +46,8 @@ create or replace view {{env.schema}}.stripe_invoices_transformed as (
       i.paid                    as paid,
       case  p.interval
         when 'yearly'
-        then i.total / 12 / 100
-        else i.total / 100
+        then i.total::float / 12 / 100
+        else i.total::float / 100
       end                                                       as total,
       row_number() over(
         partition by i.customer
