@@ -2,7 +2,7 @@ with
 
 invoices as (
   select *
-  from {{env.schema}}.stripe_invoices_transformed
+  from ac_jthandy.stripe_invoices_transformed
 ),
 
 plan_changes as (
@@ -31,7 +31,7 @@ churns AS (
     sum(total) as total
   from invoices
   where last_payment = 1
-  and date_trunc('month', date) < date_trunc('month', date_trunc('month', current_date) - 1)
+  and date_trunc('month', date) < date_trunc('month', current_date)
   group by 1
 ),
 
@@ -75,5 +75,5 @@ from news
   left outer join upgrades on news.month = upgrades.month
   left outer join downgrades on news.month = downgrades.month
   left outer join churns on news.month = churns.month
-where news.month < (select date_trunc('month', current_date))
+where news.month < date_trunc('month', current_date)
 order by month
