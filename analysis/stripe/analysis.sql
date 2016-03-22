@@ -9,19 +9,11 @@ plan_changes as (
   select
     invoices.customer as customer,
     date_trunc('month', invoices.date) as month,
-    invoices.total as now,
-    prior_month_invoices.total as before,
-    invoices.total - prior_month_invoices.total as change
+    lag(invoices.total) over (partition by invoices.customer order by invoices.date) as before,
+    invoices.total as after,
+    invoices.total - lag(invoices.total) over (partition by invoices.customer order by invoices.date) as change
   from
     invoices
-    left outer join
-      invoices prior_month_invoices
-    on
-      date_trunc('month', add_months(invoices.date, -1)) = date_trunc('month', prior_month_invoices.date)
-      and invoices.customer = prior_month_invoices.customer
-  where
-    invoices.forgiven is not true
-    and invoices.paid is true
 ),
 
 news as (
