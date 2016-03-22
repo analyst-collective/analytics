@@ -61,13 +61,14 @@ downgrades as (
   group by 1
 )
 
+
 select
-  upgrades.month,
+  news.month,
+  coalesce(news.total,0) as news,
+  coalesce(churns.total,0)*-1 as churn,
   upgrades.total as upgrades,
   coalesce(downgrades.total,0) as downgrades,
-  coalesce(churns.total,0)*-1 as churn,
-  coalesce(news.total,0) as news,
-  case upgrades.month
+  case news.month
     when date_trunc('month', date_trunc('month', current_date) - 1)
       then 0
     else
@@ -78,8 +79,9 @@ select
         coalesce(news.total, 0)::float / coalesce(churns.total, 0)::float
       end
     end as quickratio
-from upgrades
-  left outer join downgrades on upgrades.month = downgrades.month
-  left outer join churns on upgrades.month = churns.month
-  left outer join news on upgrades.month = news.month
-where upgrades.month < (select date_trunc('month', current_date))
+from news
+  left outer join upgrades on news.month = upgrades.month
+  left outer join downgrades on news.month = downgrades.month
+  left outer join churns on news.month = churns.month
+where news.month < (select date_trunc('month', current_date))
+order by month
