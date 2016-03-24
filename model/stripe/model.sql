@@ -59,6 +59,8 @@ create or replace view {{env.schema}}.stripe_invoices_transformed as (
 
     select *
     from {{env.schema}}.stripe_invoices_cleaned
+    where paid is true
+      and forgiven is false
 
   ), d1 as (
 
@@ -71,43 +73,60 @@ create or replace view {{env.schema}}.stripe_invoices_transformed as (
     from d1
     where date_day <= current_date
 
+  ), customers as (
+
+    select customer, min(period_start) as active_from, max(period_end) as active_to
+    from invoices
+    where period_start <= current_date
+    group by 1
+
+  ), customer_dates as (
+
+    select date_month, customer
+    from dates d
+      inner join customers c
+        on d.date_month >= date_trunc('month', c.active_from)
+          and d.date_month < date_trunc('month', c.active_to)
+
   ), data as (
 
-    select date_month, period_start, period_end,
-      "interval" as period, customer,
-      case  "interval"
+    select date_month, d.customer, period_start, period_end,
+      "interval" as period,
+      case "interval"
         when 'yearly'
-        then i.total::float / 12 / 100
-        else i.total::float / 100
+          then coalesce(i.total, 0)::float / 12 / 100
+        else
+          coalesce(i.total, 0)::float / 100
       end as total,
-      row_number() over(
-        partition by i.customer
-        order by d.date_month) as payment_number
-    from dates d
-      inner join invoices i
-        on d.date_month::timestamp >= date_trunc('month', i.period_start)
-        and d.date_month::timestamp < date_trunc('month', i.period_end)
-      inner join {{env.schema}}.stripe_subscriptions s on i.subscription_id = s.id
-      inner join {{env.schema}}.stripe_plans p on s.plan_id = p.id
-    where paid is true
-      and forgiven is false
-    order by customer, date_month
+      first_value(date_month)
+        over (partition by d.customer
+        order by date_month
+        rows between unbounded preceding and unbounded following
+        ) as first_purchase_month,
+      last_value(date_month)
+        over (partition by d.customer
+        order by date_month
+        rows between unbounded preceding and unbounded following
+        ) as last_purchase_month
+    from customer_dates d
+      left outer join invoices i
+        on d.date_month >= date_trunc('month', i.period_start)
+        and d.date_month < date_trunc('month', i.period_end)
+        and d.customer = i.customer
+      left outer join {{env.schema}}.stripe_subscriptions s on i.subscription_id = s.id
+      left outer join {{env.schema}}.stripe_plans p on s.plan_id = p.id
 
   )
 
-    select customer, date_month, total, payment_number, period_end, period,
-      case
-        when date_month = last_value(date_month)
-          over (partition by customer
-              order by payment_number
-              rows between unbounded preceding and unbounded following)
-        then 1
-        else 0
-      end as last_payment,
-      case payment_number
-        when 1 then 1
-        else 0
-      end as first_payment
-    from data
+  select customer, date_month, total, period_end, period,
+    case first_purchase_month
+      when date_month then 1
+      else 0
+    end as first_payment,
+    case last_purchase_month
+      when date_month then 1
+      else 0
+    end as last_payment
+  from data
 
 );

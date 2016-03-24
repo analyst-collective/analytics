@@ -1,9 +1,3 @@
---bugs:
---for monthly customers who are missing payments, this query records the upgrade when they make the payment but not the prior downgrade when they miss the payment.
---i'm not confident that upgrades and downgrades are having the appropriate amount of revenue called 'renewal' and the appropriate called 'upgrade' or 'downgrade'.
---aka, if a person upgrades from 5 to 50, that's a 5 renewal and a 45 upgrade. from 50 to 5 that's a 45 downgrade and a 5 renewal.
---in general, i would greatly appreciate just some data validation here, making sure that we are extremely confident that the final query here is accurate.
-
 with invoices as (
 
   select *
@@ -17,18 +11,14 @@ with invoices as (
 
   select
     i.*,
-    pmi.total as prior_month_total,
-    i.total - coalesce(pmi.total, 0) as change,
-    pmi.period_end as prior_month_period_end
-  from
-    invoices i
-    left outer join invoices pmi
-    on i.date_month = dateadd('month', 1, pmi.date_month)
-      and i.customer = pmi.customer
+    lag(total) over (partition by customer order by date_month) as prior_month_total,
+    i.total - coalesce(lag(total) over (partition by customer order by date_month), 0) as change,
+    lag(period_end) over (partition by customer order by date_month) as prior_month_period_end
+  from invoices i
 
 ), data as (
 
-  select date_month, total, change,
+  select date_month, total, change
     case
       when first_payment = 1
         then 'new'
@@ -46,7 +36,6 @@ with invoices as (
         'renewal'
       end revenue_category
   from plan_changes
-  order by customer, payment_number
 
 ), news as (
 
