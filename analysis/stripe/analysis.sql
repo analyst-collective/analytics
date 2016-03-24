@@ -18,7 +18,7 @@ with invoices as (
 
 ), data as (
 
-  select date_month, total, change
+  select *,
     case
       when first_payment = 1
         then 'new'
@@ -34,7 +34,11 @@ with invoices as (
         then 'prepaid renewal'
       else
         'renewal'
-      end revenue_category
+      end revenue_category,
+      case
+        when prior_month_total < total then prior_month_total
+        else total
+      end renewal_component_of_change
   from plan_changes
 
 ), news as (
@@ -46,7 +50,7 @@ with invoices as (
 
 ), renewals as (
 
-  select date_month, sum(total) as value
+  select date_month, sum(renewal_component_of_change) as value
   from data
   where revenue_category in ('renewal', 'downgrade', 'upgrade')
   group by 1
@@ -95,4 +99,4 @@ from all_months
   left outer join churns on all_months.date_month = churns.date_month
   left outer join upgrades on all_months.date_month = upgrades.date_month
   left outer join downgrades on all_months.date_month = downgrades.date_month
-order by 1;
+order by 1
