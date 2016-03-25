@@ -6,6 +6,9 @@ clean-targets: ["target"] # directories removed by the clean task
 # Run configuration
 # output environments
 
+models: ['pardot']
+table_or_view: view
+
 run-target: my_redshift
 
 # Test configuration
