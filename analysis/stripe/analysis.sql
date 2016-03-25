@@ -10,11 +10,11 @@ with invoices as (
 ), plan_changes as (
 
   select
-    i.*,
+    *,
     lag(total) over (partition by customer order by date_month) as prior_month_total,
-    i.total - coalesce(lag(total) over (partition by customer order by date_month), 0) as change,
+    total - coalesce(lag(total) over (partition by customer order by date_month), 0) as change,
     lag(period_end) over (partition by customer order by date_month) as prior_month_period_end
-  from invoices i
+  from invoices
 
 ), data as (
 
