@@ -6,8 +6,8 @@ clean-targets: ["target"] # directories removed by the clean task
 # Run configuration
 # output environments
 
-#models: ['*']
-#table_or_view: table
+models: ['*']
+table_or_view: table
 
 run-target: my_redshift
 
