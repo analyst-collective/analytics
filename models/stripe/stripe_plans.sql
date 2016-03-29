@@ -1,8 +1,8 @@
 
-  select
-    id,
-    interval
-  from
-    demo_data.stripe_plans
+select
+  id,
+  interval
+from
+  demo_data.stripe_plans
 
 
