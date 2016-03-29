@@ -1,59 +1,3 @@
-create or replace view {{env.schema}}.stripe_invoices as (
-
-  select
-    customer,
-    date,
-    forgiven,
-    subscription as subscription_id,
-    paid,
-    total,
-    period_start,
-    period_end
-  from
-    demo_data.stripe_invoices
-
-);
-
-create or replace view {{env.schema}}.stripe_invoices_cleaned as (
-
-  select
-    customer,
-    timestamp 'epoch' + date * interval '1 Second' as date,
-    forgiven,
-    subscription_id,
-    paid,
-    total,
-    timestamp 'epoch' + period_start * interval '1 Second' as period_start,
-    timestamp 'epoch' + period_end * interval '1 Second' as period_end
-  from
-    {{env.schema}}.stripe_invoices
-
-);
-
-create or replace view {{env.schema}}.stripe_subscriptions as (
-
-  select
-    id,
-    plan__id as plan_id
-  from
-    demo_data.stripe_subscriptions
-
-);
-
-create or replace view {{env.schema}}.stripe_plans as (
-
-  select
-    id,
-    interval
-  from
-    demo_data.stripe_plans
-
-);
-
-
-
-
-create or replace view {{env.schema}}.stripe_invoices_transformed as (
 
   with invoices as (
 
@@ -114,4 +58,4 @@ create or replace view {{env.schema}}.stripe_invoices_transformed as (
     left outer join {{env.schema}}.stripe_subscriptions s on i.subscription_id = s.id
     left outer join {{env.schema}}.stripe_plans p on s.plan_id = p.id
 
-);
+
