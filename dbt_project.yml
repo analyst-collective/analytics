@@ -1,15 +1,5 @@
-# Compile configuration
-source-paths: ["model"]   # paths with source code to compile
-target-path: "target"     # path for compiled code
-clean-targets: ["target"] # directories removed by the clean task
-
-# Run configuration
-# output environments
-
-models: ['*']
-table_or_view: table
-
-run-target: my_redshift
-
-# Test configuration
-test-paths: ["test"]
+#settings specifically for this models directory
+#config other dbt settings within ~/.dbt/profiles.yml
+source-paths: ["models"]
+target-path: "target"
+clean-targets: ["target"]
