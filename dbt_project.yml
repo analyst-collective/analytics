@@ -3,3 +3,6 @@
 source-paths: ["models"]
 target-path: "target"
 clean-targets: ["target"]
+
+models: ["*"]
+table_or_view: 'table'
