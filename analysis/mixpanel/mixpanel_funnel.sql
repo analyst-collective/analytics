@@ -1,6 +1,6 @@
 with
 source as (
-    select * from ac_yevgeniy.mixpanel_export -- change this view for your analysis
+    select * from {{env.schema}}.mixpanel_export -- change this view for your analysis
 ),
 
 step_1 as (

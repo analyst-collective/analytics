@@ -1,5 +1,4 @@
---create or replace view {{env.schema}}.mixpanel_export as
-create or replace view ac_yevgeniy.mixpanel_export as
+create or replace view {{env.schema}}.mixpanel_export as
 (
 	select
 		(timestamp 'epoch' + time * interval '1 Second')
@@ -14,8 +13,7 @@ create or replace view ac_yevgeniy.mixpanel_export as
 
 
 
---create or replace view {{env.schema}}.mixpanel_export_with_sessions as (
-create or replace view ac_yevgeniy.mixpanel_export_with_sessions as
+create or replace view {{env.schema}}.mixpanel_export_with_sessions as
 (
 	-- a new session is defined after 30 minutes of inactivity
 	with new_sessions as
@@ -27,7 +25,7 @@ create or replace view ac_yevgeniy.mixpanel_export_with_sessions as
 	            then 1
 	            else 0
 	        end as new_session, *
-	    from ac_yevgeniy.mixpanel_export
+	    from {{env.schema}}.mixpanel_export
 	)
 
 	-- make sure the first sessions is marked 1 and not 0
@@ -40,8 +38,8 @@ create or replace view ac_yevgeniy.mixpanel_export_with_sessions as
 
 
 
---create or replace view {{env.schema}}.mixpanel_cohort_data as (
-create or replace view ac_yevgeniy.mixpanel_cohort_data as
+
+create or replace view {{env.schema}}.mixpanel_cohort_data as
 (
 	with
 	cohort_dates as
@@ -53,7 +51,7 @@ create or replace view ac_yevgeniy.mixpanel_cohort_data as
 		from
 		(
 			select ac_user_id, min(ac_timestamp) as first_event_date
-			from ac_yevgeniy.mixpanel_export
+			from {{env.schema}}.mixpanel_export
 			where
 				-- specifiy the cohort criterion, say based on event_1 being the user's first event
 				event = 'event_1'
@@ -65,7 +63,7 @@ create or replace view ac_yevgeniy.mixpanel_cohort_data as
 	(
 		-- get a second event date
 		select ac_user_id, min(ac_timestamp) as second_event_date
-		from ac_yevgeniy.mixpanel_export
+		from {{env.schema}}.mixpanel_export
 		where
 			-- specify a second event of interest, say event_3 is a signup
 			event = 'event_3'
