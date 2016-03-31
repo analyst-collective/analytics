@@ -1,3 +1,13 @@
+create or replace view {{env.schema}}.mixpanel_engage as
+(
+	select
+		mp_reserved_created			as ac_user_created,
+		mp_reserved_distinct_id		as ac_user_id,
+		*
+	from demo_data.mixpanel_engage
+);
+
+
 create or replace view {{env.schema}}.mixpanel_export as
 (
 	select
