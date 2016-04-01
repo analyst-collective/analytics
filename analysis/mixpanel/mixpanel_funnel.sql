@@ -4,56 +4,56 @@ source as (
 ),
 
 step_1 as (
-    select min(ac_timestamp) as ac_timestamp, ac_user_id
+    select min(event_date) as event_date, user_id
     from source
-        where ac_event = 'event_1' -- filter by whichever columns you need
-    group by ac_user_id
+        where event = 'event_1' -- filter by whichever columns you need
+    group by user_id
 ),
 
 -- add more steps as you need. If you do add more steps, make sure to add a join below
 step_2 as (
-    select min(ac_timestamp) as ac_timestamp, ac_user_id
+    select min(event_date) as event_date, user_id
     from source
-        where ac_event = 'event_2'
-    group by ac_user_id
+        where event = 'event_2'
+    group by user_id
 ),
 
 step_3 as (
-    select min(ac_timestamp) as ac_timestamp, ac_user_id
+    select min(event_date) as event_date, user_id
     from source
-        where ac_event = 'event_3'
-    group by ac_user_id
+        where event = 'event_3'
+    group by user_id
 ),
 
 step_4 as (
-    select min(ac_timestamp) as ac_timestamp, ac_user_id
+    select min(event_date) as event_date, user_id
     from source
-        where ac_event = 'event_4'
-    group by ac_user_id
+        where event = 'event_4'
+    group by user_id
 ),
 
 step_5 as (
-    select min(ac_timestamp) as ac_timestamp, ac_user_id
+    select min(event_date) as event_date, user_id
     from source
-        where ac_event = 'event_5'
-    group by ac_user_id
+        where event = 'event_5'
+    group by user_id
 ),
 
 temp_funnel as (
 
-    select 1 as funnel_idx, 'step_1' as funnel_step, count(distinct ac_user_id) as num_current_step
+    select 1 as funnel_idx, 'step_1' as funnel_step, count(distinct user_id) as num_current_step
     from step_1
     union
-    select 2 as funnel_idx, 'step_2' as funnel_step, count(distinct ac_user_id) as num_current_step
+    select 2 as funnel_idx, 'step_2' as funnel_step, count(distinct user_id) as num_current_step
     from step_2
     union
-    select 3 as funnel_idx, 'step_3' as funnel_step, count(distinct ac_user_id) as num_current_step
+    select 3 as funnel_idx, 'step_3' as funnel_step, count(distinct user_id) as num_current_step
     from step_3
     union
-    select 4 as funnel_idx, 'step_4' as funnel_step, count(distinct ac_user_id) as num_current_step
+    select 4 as funnel_idx, 'step_4' as funnel_step, count(distinct user_id) as num_current_step
     from step_4
     union
-    select 5 as funnel_idx, 'step_5' as funnel_step, count(distinct ac_user_id) as num_current_step
+    select 5 as funnel_idx, 'step_5' as funnel_step, count(distinct user_id) as num_current_step
     from step_5
 )
 
