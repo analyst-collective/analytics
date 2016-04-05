@@ -12,7 +12,7 @@ first_event_data as
         user_id, first_event_date
     from
     (
-        -- pick the first occurence of the event of interest fo cohorting purposes
+        -- pick the first occurence of the event of interest for cohorting purposes
         select user_id, min(event_date) as first_event_date
         from mixpanel_events
         where
