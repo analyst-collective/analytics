@@ -1,29 +1,43 @@
 with
-email_summary as
-(
-	select *
-	from {{env.schema}}.mailchimp_email_summary
-),
-
 gains as (
 	select date_trunc('month', signup_date) as month, count(*) total_gains
 	from {{env.schema}}.mailchimp_members
 	group by date_trunc('month', signup_date)
 ),
 
+hard_bounces as
+(
+	-- get the first hard bounce date for each email
+	select email_id, min(bounced_date) as event_date
+    from {{env.schema}}.mailchimp_bounces
+    where bounce_type = 'hard'
+    group by email_id
+),
+
+unsubscribes as
+(
+	-- get the first unsubscribed date for each email
+    select email_id, min(unsubscribed_date) as event_date
+    from {{env.schema}}.mailchimp_unsubscribes
+    group by email_id
+),
+
 losses as (
-	select month, count(*) as total_losses
+	-- count losses for each month
+	select date_trunc('month', event_date) as month, count(*) as total_losses
 	from
 	(
-		-- find everyone who unsubscribed
-	  	select date_trunc('month', unsubscribed_date) as month
-	  	from email_summary
-	  	where unsubscribed_date is not null
-	  	-- add everyone with a hard bounce
-	  	union
-	  	select date_trunc('month', hard_bounced_date) as month
-	  	from email_summary
-	  	where hard_bounced_date is not null
+		-- select the first of unsubscribe or hard bounce
+		select email_id, min(event_date) as event_date
+		from
+		(
+		  	select email_id, event_date
+		  	from hard_bounces
+		  	union
+		  	select email_id, event_date
+		  	from unsubscribes
+		)
+		group by email_id
 	)
 	group by month
 ),
