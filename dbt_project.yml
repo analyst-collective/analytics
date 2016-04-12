@@ -7,8 +7,9 @@ test-paths: ["test"]
 
 model-defaults:
   materialized: false
-  enabled: true
+  enabled: false
 
-#models:
-#  zuora:
-#    materialized: true
+models:
+  zuora:
+    enabled: true
+    materialized: false
