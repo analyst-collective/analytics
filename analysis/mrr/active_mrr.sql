@@ -5,7 +5,7 @@ charges_for_active_plans as
 	from {{env.schema}}.zuora_subscriptions_w_charges_and_amendments
 	where
 		-- make sure the subscription is active
-		subscr_status = 'Active'
+		sub_status = 'Active'
 		and
 		(
 			-- make sure the rate plan charge is current
@@ -14,7 +14,7 @@ charges_for_active_plans as
 				and
 				rpc_end >= current_date
 			)
-			or subscr_term_type = 'EVERGREEN'
+			or sub_term_type = 'EVERGREEN'
 		)
 		and rpc_last_segment = TRUE
 )

@@ -15,7 +15,7 @@ with subscr_w_amendments as
 
 select
     account_number, sub.account_id, sub.sub_id,
-    sub.sub_name, sub.status, sub.term_type, 
+    sub.sub_name, sub.status as sub_status, sub.term_type as sub_term_type, 
     sub.sub_start_date, sub.sub_end_date, sub.sub_version, amend_id, amend_start,
     rpc_start, rpc_end, rpc_last_segment,
     min(sub.sub_start_date) over() as first_subscr,
