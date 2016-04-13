@@ -3,11 +3,11 @@ with subscr_w_amendments as
 (
     select
         account_number, acc.account_id, sub.sub_id,
-        sub_name, sub.status, sub.termtype, 
+        sub_name, sub.status, sub.term_type, 
         sub_start_date, sub_end_date, sub_version, amend_id, amend_start
     from {{env.schema}}.zuora_account acc
     inner join {{env.schema}}.zuora_subscription sub
-        on acc.account_id = sub.accountid
+        on acc.account_id = sub.account_id
     -- add ammendments
     left outer join {{env.schema}}.zuora_amendment amend
         on sub.sub_id = amend.subscr_id
