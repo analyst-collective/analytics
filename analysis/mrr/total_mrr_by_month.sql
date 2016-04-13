@@ -27,7 +27,7 @@ charges_up_to_each_date as
 		amend_start, amend_id, sub_term_type, sub_start_date, sub_end_date, sub_id,
 		sub_name, sub_version,
 		dateadd(month,1,date_month) as date_month_plus_one,
-		max(date_day) over (partition by subscr_name, dateadd(month,1,date_month)) as max_subscr_trunc_date,
+		max(date_day) over (partition by sub_name, dateadd(month,1,date_month)) as max_subscr_trunc_date,
 		max(sub_version) over (partition by sub_name, date_month) as max_subscr_version_within_date
 	from dates a
 	left join subscriptions b
