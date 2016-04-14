@@ -1,10 +1,5 @@
 with events as (
-  	select
-	  	campaign_id, email_id, sent_date,
-	  	decode(hard_bounced_date, null, 0, 1) as hard_bounced,
-		decode(first_opened_date, null, 0, 1) as opened,
-		decode(first_clicked_date, null, 0, 1) as clicked,
-    	decode(unsubscribed_date, null, 0, 1) as unsubscribed
+  	select *
   	from {{env.schema}}.mailchimp_email_summary
 )
 

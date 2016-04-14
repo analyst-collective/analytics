@@ -48,14 +48,25 @@ months as (
 	union
 	select month
 	from losses
+),
+
+monthly_gains_and_losses as (
+
+  select
+  	months.month, nvl(total_gains,0) as month_gains,
+  	nvl(total_losses,0) as month_losses
+  from months
+  left outer join gains
+  	on months.month = gains.month
+  left outer join losses
+  	on months.month = losses.month
+  order by months.month
+
 )
 
-select
-	months.month, nvl(total_gains,0) as total_gains,
-	nvl(total_losses,0) as total_losses
-from months
-left outer join gains
-	on months.month = gains.month
-left outer join losses
-	on months.month = losses.month
-order by months.month
+select month, month_gains, month_losses * -1 as month_losses, month_gains - month_losses as net_member_growth,
+	sum(month_gains) over (order by month rows unbounded preceding) as cum_gains,
+	sum(month_losses) over (order by month rows unbounded preceding) as cum_losses,
+	sum(month_gains) over (order by month rows unbounded preceding) -
+	sum(month_losses) over (order by month rows unbounded preceding) as active_members
+from monthly_gains_and_losses
