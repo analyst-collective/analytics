@@ -6,8 +6,8 @@ with email_summary as (
 )
 
 select email_id, sum(clicked)::float / sum(opened)
-  from email_summary
- group by 1
+from email_summary
+group by 1
 having sum(opened) > 5
- order by 2 desc
- limit 100
+order by 2 desc
+limit 100
