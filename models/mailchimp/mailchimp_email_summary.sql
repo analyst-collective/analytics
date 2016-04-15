@@ -1,4 +1,4 @@
-with 
+with
 sends as (
     select campaign_id, email_id, sent_date
     from {{env.schema}}.mailchimp_sends
@@ -35,11 +35,11 @@ unsubscribes as (
 select
     s.campaign_id, s.email_id, sent_date, hard_bounced_date, first_opened_date,
     last_opened_date, total_opens, first_clicked_date, last_clicked_date,
-    total_clicks, unsubscribed_date--,
-    --decode(bounced_date, null, 0, 1) as hard_bounced,
-    --decode(opened_date, null, 0, 1) as opened,
-    --decode(clicked_date, null, 0, 1) as clicked,
-    --decode(unsubscribed_date, null, 0, 1) as unsubscribed
+    total_clicks, unsubscribed_date,
+    decode(hard_bounced_date, null, 0, 1) as hard_bounced,
+    decode(first_opened_date, null, 0, 1) as opened,
+    decode(first_clicked_date, null, 0, 1) as clicked,
+    decode(unsubscribed_date, null, 0, 1) as unsubscribed
 from sends s
 left outer join hard_bounces b
     on s.email_id = b.email_id and
@@ -54,5 +54,3 @@ left outer join unsubscribes u
     on s.email_id = u.email_id and
     s.campaign_id = u.campaign_id
 order by email_id, sent_date
-
-
