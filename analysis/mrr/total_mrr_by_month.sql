@@ -24,11 +24,11 @@ charges_up_to_each_date as
 (
 	select
 		date_day, date_month, account_number, mrr, rpc_start, rpc_end, rpc_last_segment,
-		amend_start, amend_id, subscr_term_type, subscr_start, subscr_end, subscr_id,
-		subscr_name, subscr_version,
+		amend_start, amend_id, sub_term_type, sub_start_date, sub_end_date, sub_id,
+		sub_name, sub_version,
 		dateadd(month,1,date_month) as date_month_plus_one,
-		max(date_day) over (partition by subscr_name, dateadd(month,1,date_month)) as max_subscr_trunc_date,
-		max(subscr_version) over (partition by subscr_name, date_month) as max_subscr_version_within_date
+		max(date_day) over (partition by sub_name, dateadd(month,1,date_month)) as max_subscr_trunc_date,
+		max(sub_version) over (partition by sub_name, date_month) as max_subscr_version_within_date
 	from dates a
 	left join subscriptions b
 		on 1=1
@@ -58,13 +58,13 @@ all_charges_by_month as
 		)
 		or
 		(
-			subscr_term_type = 'EVERGREEN'
-			and subscr_start <= dateadd(month, 1, date_month)
+			sub_term_type = 'EVERGREEN'
+			and sub_start_date <= dateadd(month, 1, date_month)
 			and
 			(
-				subscr_end is null
+				sub_end_date is null
 				or
-				subscr_end >= dateadd(month, 1, date_month)
+				sub_end_date >= dateadd(month, 1, date_month)
 			)
 			and
 			(
@@ -75,7 +75,7 @@ all_charges_by_month as
 		)
 	)
 	and date_day = max_subscr_trunc_date
-	and subscr_version = max_subscr_version_within_date
+	and sub_version = max_subscr_version_within_date
 	and dateadd(month, 1, date_month) <= current_date
 )
 

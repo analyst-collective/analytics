@@ -9,6 +9,7 @@ model-defaults:
   materialized: false
   enabled: true
 
-#models:
-#  zuora:
-#    materialized: true
+##models:
+##  zuora:
+##    enabled: true
+##    materialized: false
