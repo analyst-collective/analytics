@@ -1,12 +1,12 @@
 with
 sends as (
     select campaign_id, email_id, sent_date
-    from {{env.schema}}.mailchimp_sends
+    from {{load('mailchimp_sends')}}
 ),
 
 hard_bounces as (
     select campaign_id, email_id, min(bounced_date) as hard_bounced_date
-    from {{env.schema}}.mailchimp_bounces
+    from {{load('mailchimp_bounces')}}
     where bounce_type = 'hard'
     group by campaign_id, email_id
 ),
@@ -15,7 +15,7 @@ opens as (
     select
         campaign_id, email_id, min(opened_date) as first_opened_date,
         max(opened_date) as last_opened_date, count(*) as total_opens
-    from {{env.schema}}.mailchimp_opens
+    from {{load('mailchimp_opens')}}
     group by campaign_id, email_id
 ),
 
@@ -23,13 +23,13 @@ clicks as (
     select
         campaign_id, email_id, min(clicked_date) as first_clicked_date,
         max(clicked_date) as last_clicked_date, count(*) as total_clicks
-    from {{env.schema}}.mailchimp_clicks
+    from {{load('mailchimp_clicks')}}
     group by campaign_id, email_id
 ),
 
 unsubscribes as (
     select campaign_id, email_id, unsubscribed_date
-    from {{env.schema}}.mailchimp_unsubscribes
+    from {{load('mailchimp_unsubscribes')}}
 )
 
 select

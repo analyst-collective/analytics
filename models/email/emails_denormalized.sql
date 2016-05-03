@@ -1,6 +1,6 @@
 with events as (
 
-  select * from {{env.schema}}.pardot_emails
+  select * from {{load('pardot_emails')}}
 
 ),
 

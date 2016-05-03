@@ -9,7 +9,7 @@ select
 	va.*
 from
 	olga_pardot.visitoractivity va
-	inner join {{env.schema}}.pardot_visitoractivity_events_meta e
+	inner join {{load('pardot_visitoractivity_events_meta')}} e
 		on va."type" = e."type" and va.type_name = e.type_name
-	inner join {{env.schema}}.pardot_visitoractivity_types_meta t
+	inner join {{load('pardot_visitoractivity_types_meta')}} t
 		on va."type" = t."type"

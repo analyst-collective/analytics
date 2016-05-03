@@ -2,7 +2,7 @@
 with invoices as (
 
   select *
-  from {{env.schema}}.stripe_invoices_cleaned
+  from {{load('stripe_invoices_cleaned')}}
   where paid is true
     and forgiven is false
 
@@ -55,7 +55,7 @@ from customer_dates d
     on d.date_month >= date_trunc('month', i.period_start)
     and d.date_month < date_trunc('month', i.period_end)
     and d.customer = i.customer
-  left outer join {{env.schema}}.stripe_subscriptions s on i.subscription_id = s.id
-  left outer join {{env.schema}}.stripe_plans p on s.plan_id = p.id
+  left outer join {{load('stripe_subscriptions')}} s on i.subscription_id = s.id
+  left outer join {{load('stripe_plans')}} p on s.plan_id = p.id
 
 
