@@ -5,5 +5,5 @@ data necessary to conform to the extended interface.
 */
 
 select "@timestamp", "@event", "@user_id", email_id as "@email_id", details as "@subject"
-	from {{load('pardot_visitoractivity')}}
+	from {{ref('pardot_visitoractivity')}}
 where "@event" in ('email sent', 'email opened', 'email click')

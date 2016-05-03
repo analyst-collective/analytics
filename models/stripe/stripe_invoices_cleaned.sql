@@ -9,6 +9,6 @@ select
   timestamp 'epoch' + period_start * interval '1 Second' as period_start,
   timestamp 'epoch' + period_end * interval '1 Second' as period_end
 from
-  {{load('stripe_invoices')}}
+  {{ref('stripe_invoices')}}
 
 

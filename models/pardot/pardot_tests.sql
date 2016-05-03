@@ -2,7 +2,7 @@ select
 	'visitoractivity_fresher_than_one_day' as name,
 	'Most recent visitoractivity entry is no more than one day old' as description,
 	max("@timestamp"::timestamp) > current_date - '1 day'::interval as result
-from {{load('pardot_visitoractivity')}}
+from {{ref('pardot_visitoractivity')}}
 
 
 
