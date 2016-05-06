@@ -5,11 +5,11 @@ with subscr_w_amendments as
         account_number, acc.account_id, sub.subscr_id,
         subscr_name, subscr_status, subscr_term_type, 
         subscr_start, subscr_end, subscr_version, amend_id, amend_start
-    from {{env.schema}}.zuora_account acc
-    inner join {{env.schema}}.zuora_subscription sub
+    from {{ref('zuora_account')}} acc
+    inner join {{ref('zuora_subscription')}} sub
         on acc.account_id = sub.account_id
     -- add ammendments
-    left outer join {{env.schema}}.zuora_amendment amend
+    left outer join {{ref('zuora_amendment')}} amend
         on sub.subscr_id = amend.subscr_id
 )
 
@@ -21,7 +21,7 @@ select
     min(subscr_start) over() as first_subscr,
     "@mrr" as mrr
 from subscr_w_amendments sub
-inner join {{env.schema}}.zuora_rate_plan rp
+inner join {{ref('zuora_rate_plan')}} rp
     on rp.subscr_id = sub.subscr_id
-inner join {{env.schema}}.zuora_rate_plan_charge rpc
+inner join {{ref('zuora_rate_plan_charge')}} rpc
     on rpc.rate_plan_id = rp.rate_plan_id
