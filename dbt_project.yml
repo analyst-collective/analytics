@@ -1,5 +1,8 @@
 #settings specifically for this models directory
 #config other dbt settings within ~/.dbt/profiles.yml
+name: 'ac_zendesk'
+version: '1.0'
+
 source-paths: ["models"]
 target-path: "target"
 clean-targets: ["target"]
