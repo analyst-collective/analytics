@@ -1,19 +1,11 @@
 
-"""
-GOAL:
-  define constraints on the data which can be tested!
-
-questions:
-  can you test relationships with non-AC tables? yah prolly
-"""
-
 pardot_visitoractivity:
   constraints:
     not_null:
       - prospect_id
     unique: []
     relationships:
-      - {from: type, to: pardot_visitoractivity_events_meta, field: type_name}
+      - {from: type, to: pardot_visitoractivity_events_meta, field: type}
       - {from: type, to: pardot_visitoractivity_types_meta, field: type}
 
 pardot_visitoractivity_events_meta:
@@ -22,10 +14,9 @@ pardot_visitoractivity_events_meta:
       - type_name
       - event_name
     unique:
-      - type_name
       - event_name
     relationships:
-      - {from: type_name, to: pardot_visitoractivity, field: type}
+      - {from: type, to: pardot_visitoractivity, field: type}
 
 pardot_visitoractivity_types_meta:
   constraints:
