@@ -13,7 +13,7 @@ This repository contains two primary types of objects: data models and data anal
 - Models can be configured in dbt to be materialized as either views or tables.
 - Model files should go into `/models` and saved with a `.sql` extension.
 - Each model should be stored in its own `.sql` file. The file name will become the name of the table or view in the database.
-- Environment configuration should be supplied via `{{env}}`.
+- Other models should be referenced with the `ref` function. This function will resolve dependencies during the `compile` stage. The only tables referenced without this function should be source raw data tables.
 - Models should be designed to minimize the selection from raw data tables. This minimizes the amount of mapping end users of models will need to do when configuring them for their local environment.
 
 ##### Analysis
@@ -21,6 +21,10 @@ This repository contains two primary types of objects: data models and data anal
 - All analysis should be built on top of models, not raw data.
 - All named fields in a given analysis should be named within a given model.
 - Confining analysis in this way ensures portability of analysis across multiple environments.
+
+##### Dependencies
+
+- All projects can include dependencies to other projects. Dependencies
 
 
 ### Contributing
