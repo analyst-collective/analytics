@@ -1,4 +1,4 @@
-### analyst-collective/analytics
+# analyst-collective/analytics
 
 This repository serves as an index for various dbt-based analytics packages. Please add additional packages by submitting PRs.
 
