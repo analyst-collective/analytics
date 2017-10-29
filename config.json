@@ -1,4 +1,0 @@
-{
-	"models" : ["pardot", "segment", "snowplow"],
-	"schema" : "analyst_collective"
-}

@@ -1,0 +1,17 @@
+#settings specifically for this models directory
+#config other dbt settings within ~/.dbt/profiles.yml
+name: 'Analyst_Collective'
+version: '1.0'
+
+source-paths: ["models"]
+target-path: "target"
+clean-targets: ["target"]
+test-paths: ["test"]
+
+model-defaults:
+  materialized: false
+  enabled: true
+
+#models:
+#  zuora:
+#    materialized: true

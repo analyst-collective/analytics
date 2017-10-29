@@ -1,9 +1,0 @@
-
-########################################
-#       Event Stream Interface         #
-########################################
-
-timestamp     timestamp
-event         varchar
-user_id       varchar
-
